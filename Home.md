@@ -19,9 +19,9 @@ To make sense of the aforementioned segmentation of specifications, we present t
 4. Measure peer response times and lack of response **[Churn Management]**
 5. Receive messages and route them to correct module or message queue. **[Routing Structure and Algorithm(s)]**
 6. Enforce peer bans **[Peer Logic & Features]**
-7. Send messages according to message type (direct, gossip, multicast) [Peer Logic & Features]
-8. Collect peer height and sync state. [Peer Logic & Features]
-9. Handle and dispatch block sync requests from other modules. [Peer Logic & Features]
-10. Handle and reply to block requests from peers. [Peer Logic & Features]
+7. Send messages according to message type (direct, gossip, multicast) **[Peer Logic & Features]**
+8. Collect peer height and sync state. **[Peer Logic & Features]**
+9. Handle and dispatch block sync requests from other modules. **[Peer Logic & Features]**
+10. Handle and reply to block requests from peers. **[Peer Logic & Features]**
 
 And so on and so forth. By no means this is an exhaustive list, but rather an example to help remove jargon fever if the segmentation in list feels too abstract.
