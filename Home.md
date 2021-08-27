@@ -13,7 +13,7 @@ In this Wiki all information relative to the Gemelos specification and implement
 
 To make sense of the aforementioned segmentation of specifications, we present this laundry list of features a p2p library might have and how they can get segmented as was done above:
 
-1. find peers [Churn Management]
+1. find peers **[Churn Management]**
 2. classify peers (nodes, validators, full nodes, Listeners) **[Peer Logic & Features]**
 3. Help other nodes find peers (answers peering info requests) **[Churn Management]**
 4. Measure peer response times and lack of response **[Churn Management]**
