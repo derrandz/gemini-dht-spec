@@ -22,7 +22,6 @@ Before we dive in this section, we want to allude to the fact that the paper its
 ----
 
 ### 1. Glossary
-----
 
 In this section, we will start by defining the main terms used by the paper to remove any ambiguity. Those will be used heavily in this specification and we hope in any implementing code.
 
@@ -36,7 +35,26 @@ In this section, we will start by defining the main terms used by the paper to r
 * **Root node / Destination node**: The destination ID from a message M such that M's destination ID is _**numerically closest**_ to the concerned node's ID
 
 ### 2. Routing Data Structure
-----
+
+The routing data structure is comprised of a hat club and a boot club representation of the network relative to the concerned node, and a formal way of describing it would be:
+
+```
+Rt(A) = { HatClub(A) U BootClub(A) }
+```
+
+Meaning, the routing table of a node A is the union of its hat club and boot club.
+
+Let's start by describing the hat and boot clubs and how they make up a routing table.
+
+#### Hat Club
+
+We define `n` as the length of IDs assigned to node, A hat club is represented as an address space (N>>n) such that each ID belonging to a hat club shares the same `h` bits with the concerned node's ID.
+
+In a given hat club:
+
+  * IDs are ordered according to their _**numerical closeness**_ to the concerned node's ID.
+  * IDs partaking in a hat club are all unique.
+  *
 
 ### 3. Routing Algorithm
 ---
