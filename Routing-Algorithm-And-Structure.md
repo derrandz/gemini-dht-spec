@@ -53,13 +53,62 @@ We define `n` as the length of IDs assigned to node, A hat club is represented a
 
 In a given hat club:
 
-  * IDs are ordered on a N>>2^n ring according to their _**numerical closeness**_ to center's ID (representing "the start point on the ring").
+  * IDs are ordered on a N>>2^n ring according to their _**numerical closeness**_ to the center's ID (representing "the start point on the ring").
   * IDs partaking in a hat club are all unique.
   * A hat club can measure the distance between a given ID and its center ID's.
-  * A hat club can calculate the **numerically closest* ID to its center.
+  * A hat club can calculate the **numerically closest* ID(s) to its center.
+
+#### Boot Club
+
+We define `n` as the length of IDs assigned to node, A boot club is represented as an address space (N>>2^n) such that each ID belonging to a boot club shares the same `b` bits with the concerned node's ID.
+
+In a given boot club:
+
+  * IDs are ordered on a N>>2^n ring according to their _**numerical closeness**_ to center's ID (representing "the start point on the ring").
+  * IDs partaking in a boot club are all unique.
+  * A boot club can measure the distance between a given ID and its center ID's.
+  * A boot club can calculate the **numerically closest* ID to its center.
 
 ### 3. Routing Algorithm
 ---
+
+To route a given message M, we define the following properties of the message that will be useful to the routing process:
+
+  * A message has a n bits long destination ID
+  * A message has a n bits long sender ID
+
+To route a message M, node N does the following:
+
+  1. Verify if the destination ID of the message M belongs to N's hat club.
+    1.a If M's destination ID belongs to N's hat club, N routes the message to the **numerically closest** ID to the M's destination ID
+    1.b If not, N looks for a node E in its boot club such that E's ID is in the same club as in M's destination ID.
+      1.b.a If found, node N routes the message M to node E
+      1.b.b If not, node N routes E to a randomly picked node from its hat case such that E's ID is in a different boot case than M's destination ID.
+
+Written in pseudo-code, the Gemini routing algorithm is as follows:
+```
+route(M):
+  if M belongs to HatClub(N)
+  then:
+     Route to the numerically closest ID to M's destination ID;
+     return;
+  else:
+    for every E in HatClub(N):
+      if M's destination ID belongs to HatClub(E)
+      then:
+         Route to E;
+         return;
+ 
+  notFound = true
+  E <- null
+  while notFound:
+    E <- PickRandomNodeFrom(HatClub(B)
+    if not (E belongs to BootClub(M's destination ID))
+    then:
+      notFound = false
+
+  Route to E.
+```
 
 ## How Does Gemini Impact The Other Parts
 ----
