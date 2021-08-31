@@ -33,6 +33,7 @@ In this section, we will start by defining the main terms used by the paper to r
 * **Hat club**: The set of nodes such that their IDs first `h` bits are the same as concerned node
 * **Boot club**: The set of nodes such that their IDs first `b` bits are the same as concerned node
 * **Root node / Destination node**: The destination ID from a message M such that M's destination ID is _**numerically closest**_ to the concerned node's ID
+* **Center of a club** (✍🏻): Is the concerned node in a hat club. If we take node X, node X is the center of its own Hat and Boot Clubs.
 
 ### 2. Routing Data Structure
 
@@ -48,13 +49,14 @@ Let's start by describing the hat and boot clubs and how they make up a routing 
 
 #### Hat Club
 
-We define `n` as the length of IDs assigned to node, A hat club is represented as an address space (N>>n) such that each ID belonging to a hat club shares the same `h` bits with the concerned node's ID.
+We define `n` as the length of IDs assigned to node, A hat club is represented as an address space (N>>2^n) such that each ID belonging to a hat club shares the same `h` bits with the concerned node's ID.
 
 In a given hat club:
 
-  * IDs are ordered according to their _**numerical closeness**_ to the concerned node's ID.
+  * IDs are ordered on a N>>2^n ring according to their _**numerical closeness**_ to center's ID (representing "the start point on the ring").
   * IDs partaking in a hat club are all unique.
-  *
+  * A hat club can measure the distance between a given ID and its center ID's.
+  * A hat club can calculate the **numerically closest* ID to its center.
 
 ### 3. Routing Algorithm
 ---
