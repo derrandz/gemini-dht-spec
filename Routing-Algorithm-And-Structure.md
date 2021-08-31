@@ -14,6 +14,7 @@ Before we dive in this section, we want to allude to the fact that the paper its
 ----
 // Link [Paper](https://link.springer.com/content/pdf/10.1007%2F978-3-540-24685-5_22.pdf)
 
+
 ## Why Gemini?
 ----
 // Link to Forum summarizing our research effort or add in as a separate page in the wiki
@@ -35,6 +36,7 @@ In this section, we will start by defining the main terms used by the paper to r
 * **Root node / Destination node**: The destination ID from a message M such that M's destination ID is _**numerically closest**_ to the concerned node's ID
 * **Center of a club** (✍🏻): Is the concerned node in a hat club. If we take node X, node X is the center of its own Hat and Boot Clubs.
 
+> To learn more about the nature and structure of the IDs used with this algorithm, please refer to [Node Identification And Security](https://github.com/pokt-network/gemelos/wiki/)
 ### 2. Routing Data Structure
 
 The routing data structure is comprised of a hat club and a boot club representation of the network relative to the concerned node, and a formal way of describing it would be:
