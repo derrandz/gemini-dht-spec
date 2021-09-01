@@ -98,7 +98,7 @@ route(M):
      return;
   else:
     for every E in HatClub(N):
-      if destID belongs to HatClub(E)
+      if destID belongs to BootClub(E)
       then:
          Route to E;
          return;
@@ -106,7 +106,7 @@ route(M):
   notFound = true
   E <- null
   while notFound:
-    E <- PickRandomNodeFrom(BootClub(B)
+    E <- PickRandomNodeFrom(HatClub(B)
     if not (E belongs to BootClub(destID))
     then:
       notFound = false
