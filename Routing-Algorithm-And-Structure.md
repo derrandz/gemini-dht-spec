@@ -106,7 +106,7 @@ route(M):
   notFound = true
   E <- null
   while notFound:
-    E <- PickRandomNodeFrom(HatClub(B)
+    E <- PickRandomNodeFrom(BootClub(B)
     if not (E belongs to BootClub(destID))
     then:
       notFound = false
