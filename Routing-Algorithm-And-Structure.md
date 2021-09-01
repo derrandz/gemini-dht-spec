@@ -103,13 +103,11 @@ route(M):
          Route to E;
          return;
  
-  notFound = true
   E <- null
-  while notFound:
-    E <- PickRandomNodeFrom(HatClub(B)
+  for every e in HatClub(N):
     if not (E belongs to BootClub(destID))
     then:
-      notFound = false
+      E <- e
 
   Route to E.
 ```
