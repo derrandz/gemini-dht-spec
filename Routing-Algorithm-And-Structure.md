@@ -91,13 +91,14 @@ To route a message M, node N does the following:
 Written in pseudo-code, the Gemini routing algorithm is as follows:
 ```
 route(M):
-  if M belongs to HatClub(N)
+  destID <- M's destination ID
+  if destID belongs to HatClub(N)
   then:
-     Route to the numerically closest ID to M's destination ID;
+     Route to the numerically closest ID to destID;
      return;
   else:
     for every E in HatClub(N):
-      if M's destination ID belongs to HatClub(E)
+      if destID belongs to HatClub(E)
       then:
          Route to E;
          return;
@@ -106,7 +107,7 @@ route(M):
   E <- null
   while notFound:
     E <- PickRandomNodeFrom(HatClub(B)
-    if not (E belongs to BootClub(M's destination ID))
+    if not (E belongs to BootClub(destID))
     then:
       notFound = false
 
