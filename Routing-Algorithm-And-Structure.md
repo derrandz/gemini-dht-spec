@@ -97,8 +97,8 @@ route(M):
      Route to the numerically closest ID to destID;
      return;
   else:
-    for every E in HatClub(N):
-      if destID belongs to BootClub(E)
+    for every E in BootClub(N):
+      if destID belongs to HatClub(E)
       then:
          Route to E;
          return;
