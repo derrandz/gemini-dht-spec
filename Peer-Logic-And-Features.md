@@ -33,7 +33,7 @@ The star communication model is as the name implies, one central nucleus who is 
 ![Circular trickle down communication as in Chord](https://www.researchgate.net/profile/Mario-Kolberg/publication/262398264/figure/fig1/AS:669953283862535@1536740718640/An-example-Chord-network-showing-the-choice-of-finger-nodes-for-Node-N8_Q320.jpg)
 
 #### 3. Eventual Propagation
-
+![Tree-based multicast](https://i.ibb.co/f2gpg9z/Screen-Shot-2021-09-07-at-12-37-19-AM.png)
 ### Awareness models (_Specialized states_)
 ---
 
