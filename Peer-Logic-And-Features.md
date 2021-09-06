@@ -30,7 +30,7 @@ The star communication model is as the name implies, one central nucleus who is 
 ![Hotstuff's star communication pattern](https://miro.medium.com/max/1136/1*Ag8SrZlFbMUQZAZR9n0r0A.png)
 #### 2. Trickled Multicast
 
-![Circular trickle down communication as in Chord](https://ars.els-cdn.com/content/image/1-s2.0-S0895717706000355-gr1.jpg)
+![Circular trickle down communication as in Chord](https://www.researchgate.net/profile/Mario-Kolberg/publication/262398264/figure/fig1/AS:669953283862535@1536740718640/An-example-Chord-network-showing-the-choice-of-finger-nodes-for-Node-N8_Q320.jpg)
 
 #### 3. Eventual Propagation
 
