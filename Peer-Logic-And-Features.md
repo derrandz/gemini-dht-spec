@@ -7,6 +7,15 @@ In specific terms, this section deals with communication models (_or specialized
 
 ## Peer Logic
 ----
+First, we need to discuss a few things a **_peer needs to do in the network_**. We are interested in the two main state-touching scenarios:
+
+1. Proposing
+
+It has become apparent to us early on that the consensus layer establishes a communication requirement to meet its security requirements, namely requiring the proposer to directly communicate with the concerned validators. Thus, it is incumbent on the peer-to-peer layer as a module to offer such functionality while _**also factoring it into the sum of all parts**_.
+
+2. Syncing
+
+When a node is trying to sync the blockchain, we would like the network to be smart enough to know what other peers are the best candidates to sync from and also do so rather efficiently. Since discovering such network state can be expensive to do in a cold fashion (_ specially at scale_), we hope to describe methods by which the peer to peer module will ensure maximum efficiency in doing so.
 
 ## Features
 ----
