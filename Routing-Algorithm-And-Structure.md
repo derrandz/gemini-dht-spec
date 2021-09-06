@@ -7,6 +7,7 @@ In this section, we go in depth behind our decision making behind choosing Gemin
 Before we dive in this section, we want to allude to the fact that the paper itself lacks any reference implementation, and is not very rigorous in defining Mathematical terms, so we will provide our own answers in multiple cases, so we want to make use of the following visual toolbox (_while thanking devp2p spec for the inspiration_):
 
 ✍🏻: A new term we chose to use for convenience purposes
+
 🗝: Key concept that should be paid attention to
 
 
