@@ -24,7 +24,14 @@ When a node is trying to sync the blockchain, we would like the network to be sm
 ---
 
 #### 1. Direct/STAR Communication
+
+The star communication model is as the name implies, one central nucleus who is trying to communicate with a multitude of edges.
+
+![Hotstuff's star communication pattern](https://miro.medium.com/max/1136/1*Ag8SrZlFbMUQZAZR9n0r0A.png)
 #### 2. Trickled Multicast
+
+![Circular trickle down communication as in Chord](https://ars.els-cdn.com/content/image/1-s2.0-S0895717706000355-gr1.jpg)
+
 #### 3. Eventual Propagation
 
 ### Awareness models (_Specialized states_)
