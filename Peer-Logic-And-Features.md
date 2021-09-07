@@ -15,7 +15,7 @@ It has become apparent to us early on that the consensus layer establishes a com
 
 2. Syncing
 
-When a node is trying to sync the blockchain, we would like the network to be smart enough to know what other peers are the best candidates to sync from and also do so rather efficiently. Since discovering such network state can be expensive to do in a cold fashion (_ specially at scale_), we hope to describe methods by which the peer to peer module will ensure maximum efficiency in doing so.
+When a node is trying to sync the blockchain, we would like the network to be smart enough to know what other peers are the best candidates to sync from and also do so rather efficiently. Since discovering such network state can be expensive to do in a cold fashion (_specially at scale_), we hope to describe methods by which the peer to peer module will ensure maximum efficiency in doing so.
 
 ## Features
 
