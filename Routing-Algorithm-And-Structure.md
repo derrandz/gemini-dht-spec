@@ -119,3 +119,10 @@ route(M):
 ## How Does Gemini Impact The Other Parts
 ----
 
+1. Club (_hat and boot_) elements are interconnected, how does this influence outbound/inbound connections?
+
+### Open questions
+
+1. What happens if I am the only element in my hat and boot club?
+   * lowest h and b
+   * multi level routing table (h=b=5, h=b=4, h=b=3, h=b=2)
