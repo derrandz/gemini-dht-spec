@@ -31,7 +31,7 @@ This way a Peer that joins is paired with its corresponding Prefix and Suffix gr
 
 #### 3. Leave
 
-A peer that wants to leave the network basically disconnects relies on the maintenance routine to broadcast its unavailability. Every x unit of time defined by the maintenance params, the Peers on each individual group (suffix or prefix) ordered in a Ring-like or linked list structure verify the status of the next peer in the list (Last Peer verify the first) by sending a "heartbeat" message. If T failures happened the Peer then multicasts the unavailability of the verified Peer to all the nodes in this group.
+A peer that wants to leave the network basically disconnects relies on the maintenance routine to broadcast its unavailability. Every x unit of time defined by the maintenance params, the Peers on each individual group (suffix or prefix) ordered in a Ring-like or linked list structure verify the status of the next peer in the list (Last Peer verify the first) by sending a "heartbeat" message. If T failures happened the Peer then multicasts the unavailability of the verified Peer to all the nodes in this group, sending a Peer Event Message.
 
 #### 4. Maintenance
 
