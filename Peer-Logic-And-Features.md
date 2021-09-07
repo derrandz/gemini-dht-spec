@@ -18,7 +18,6 @@ It has become apparent to us early on that the consensus layer establishes a com
 When a node is trying to sync the blockchain, we would like the network to be smart enough to know what other peers are the best candidates to sync from and also do so rather efficiently. Since discovering such network state can be expensive to do in a cold fashion (_ specially at scale_), we hope to describe methods by which the peer to peer module will ensure maximum efficiency in doing so.
 
 ## Features
-----
 
 ### Specialized Communications (_Communication models_)
 ---
@@ -28,15 +27,24 @@ When a node is trying to sync the blockchain, we would like the network to be sm
 The star communication model is as the name implies, one central nucleus who is trying to communicate with a multitude of edges.
 
 ![Hotstuff's star communication pattern](https://miro.medium.com/max/1136/1*Ag8SrZlFbMUQZAZR9n0r0A.png)
+
 #### 2. Trickled Multicast
 
 ![Circular trickle down communication as in Chord](https://www.researchgate.net/profile/Mario-Kolberg/publication/262398264/figure/fig1/AS:669953283862535@1536740718640/An-example-Chord-network-showing-the-choice-of-finger-nodes-for-Node-N8_Q320.jpg)
 
 #### 3. Eventual Propagation
 ![Tree-based multicast](https://i.ibb.co/f2gpg9z/Screen-Shot-2021-09-07-at-12-37-19-AM.png)
+
+
 ### Awareness models (_Specialized states_)
 ---
 
 #### 1. Chain Aware Network
 #### 2. Geography Aware Network
 
+
+### Application
+---
+
+#### 1. Proposing
+#### 2. Syncing
