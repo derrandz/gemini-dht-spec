@@ -41,7 +41,7 @@ The star communication model is as the name implies, one central nucleus who is 
 
 #### 1. Chain Aware Network
 #### 2. Geography Aware Network
-
+#### 3. Reputation Aware Network (Blacklisting and stuff)
 
 ### Application
 ---
