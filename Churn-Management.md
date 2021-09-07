@@ -35,7 +35,7 @@ A peer that wants to leave the network basically disconnects and relies on the m
 
 Every x unit of time defined by the maintenance params, the Peers on each individual group (suffix or prefix) ordered in a Ring-like or linked list structure verify the status of the next peer in the list (Last Peer verify the first) by sending a "heartbeat" message. If T failures happened the Peer then multicasts the unavailability of the verified Peer to all the nodes in this group, sending a Peer Event Message.
 
-The sending of a Direct Event Message is an option if an implementation chooses to allow regular peering with elements outside of the prefix/suffix groups. 
+The sending of a Direct Event Message is an option if an implementation chooses to allow regular peering with elements outside of the prefix/suffix groups. This will marginally increase maintenance cost
 
 #### 4. Maintenance
 
