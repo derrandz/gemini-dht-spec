@@ -19,6 +19,12 @@ Before we dive in this section, we want to allude to the fact that the paper its
 ## Why Gemini?
 ----
 // Link to Forum summarizing our research effort or add in as a separate page in the wiki
+ 
+//TODO Review
+1) Gemini divides Peers into two symmetric manners, allowing for control and configuration.
+2) Gemini nodes employ items in the other dimension of groups as pointers allowing Peers to have a reduced fixed scope (smaller routing table).
+3) In Gemini whether a message can successfully reach its hat club in one hop is in some probability. Reducing this probability can trade hop count for bandwidth overhead, making Gemini more scalable than others.
+4) Unlike other overlays that are designed for file lookups, Gemini is just a substrate, making it lighter and leaving data operations to its application designers. 
 
 ## Specification
 ----
