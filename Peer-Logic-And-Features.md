@@ -24,9 +24,26 @@ When a node is trying to sync the blockchain, we would like the network to be sm
 
 #### 1. Direct/STAR Communication
 
-The star communication model is as the name implies, one central nucleus who is trying to communicate with a multitude of edges.
+##### Description
+The star communication model is as the name implies, a one central nucleus who is trying to communicate with a multitude of edges.
+
+A visual illustration is present here as follow:
 
 ![Hotstuff's star communication pattern](https://miro.medium.com/max/1136/1*Ag8SrZlFbMUQZAZR9n0r0A.png)
+
+The goal of such communication model is to directly communicate with a list of peers while maintaining connection with them to perform whatever acknowledgment behavior or request/response behavior.
+
+At this point, we envisage that this feature will be primarily used by the proposer-to-validators relationship, but could potentially used in the future for other purposes.
+
+##### Formalization
+
+The direct communication model is specified as follows:
+
+1. The nucleus peer expects to have its edge peers addresses in a list, either produced from its routing table or retrieved from the chain or some other party*.
+2. The edge peers are not required to be in the routing table of the nucleus peer. 
+3. The nucleus peer sequentially and linearly communicates with the nodes in the provided edge peers addresses list
+4. Order is irrelevant in this equation
+5. Direct communication will have a separate channel(s) and will not be bound to maximum connections and connection pooling constraints. (_refer to the [Transport Protocol & Security Section](https://github.com/pokt-network/gemelos/wiki/Transport-Protocols-And-Security) for more informtation_)
 
 #### 2. Trickled Multicast
 
