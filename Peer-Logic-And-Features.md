@@ -56,9 +56,15 @@ This model is similar to the direct communication model since the peer who initi
 
 The concept is nothing new apart from the fact that we picked for it an expressive (_and rather unambiguous_) name, and is already present in (_for example_) Chord.
 
-A visual illustration is present here and is as follow:
+A visual illustration of this sequential process is present here and is as follow:
+
+![Trickled Around as is](https://i.ibb.co/kQJ7yT9/Trickel-Around.png)
+
+If we are to aggregate all peers and their rings in one network ring, it would be very similar to chord and as follows:
 
 ![Trickled Around Communication as in Chord](https://www.researchgate.net/profile/Mario-Kolberg/publication/262398264/figure/fig1/AS:669953283862535@1536740718640/An-example-Chord-network-showing-the-choice-of-finger-nodes-for-Node-N8_Q320.jpg)
+
+Except that the jump will not be logarithmic but sequential and also semi-random.
 
 (_Refer to [Routing Structure And Algorithm](https://github.com/pokt-network/gemelos/wiki/Routing-Structure-And-Algorithm) section to learn more about the ring structure and how can this trickling be achieved_)
 
