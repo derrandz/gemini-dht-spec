@@ -15,6 +15,8 @@ Before we dive in this section, we want to allude to the fact that the paper its
 ----
 // Link [Paper](https://link.springer.com/content/pdf/10.1007%2F978-3-540-24685-5_22.pdf)
 
+// Link [Paper 2 version](https://www.researchgate.net/publication/221601988_Gemini_Probabilistic_Routing_Algorithm_in_Structured_P2P_Overlay/link/53fdb64c0cf22f21c2f82a31/download)
+
 
 ## Why Gemini?
 ----
