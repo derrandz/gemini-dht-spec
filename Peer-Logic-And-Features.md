@@ -43,7 +43,7 @@ The direct communication model is specified as follows:
 2. The edge peers are not required to be in the routing table of the nucleus peer. 
 3. The nucleus peer sequentially and linearly communicates with the nodes in the provided edge peers addresses list
 4. Order is irrelevant in this equation
-5. Direct communication will have a separate channel(s) and will not be bound to maximum connections and connection pooling constraints. (_refer to the [Transport Protocol & Security Section](https://github.com/pokt-network/gemelos/wiki/Transport-Protocols-And-Security) for more informtation_)
+5. Direct communication will have a separate channel(s) and will not be bound to maximum connections and connection pooling constraints. (_refer to the [Transport Protocol & Security Section](https://github.com/pokt-network/gemelos/wiki/Transport-Logic-And-Security) for more information_)
 6. Direct communication messages will specify the `Direct` communication type in the messages header. (_Check [Messages In The Overlay](https://github.com/pokt-network/gemelos/wiki/Messages-In-The-Overlay) section for more information_)
 
 #### 2. Trickled Around Communication / Progressive Multicast
