@@ -72,17 +72,34 @@ Except that the jump will not be logarithmic but sequential and also semi-random
 
 The Trickled Around Communication model can be specified as follows:
 
-1. The head peer sends a Trickle Around message to the numerical closest peer in its hat club (_i.e: next peer_) and a random peer in its boot club that has a different hat club (_i.e: a node existing in a different hat club_) (_Check [Messages In The Overlay](https://github.com/pokt-network/gemelos/wiki/Messages-In-The-Overlay) section for more information_)
-2. Each peer receiving a Trickle Around message will first see if it has already received it.
-3. When a peer receives a Trickle Around message for the first time, it first prepares the contents of the message for consumption and then increases the count metric in the received Trickle Around message, and passes it on according to the Trickle Around Algorithm as per point (1.)
-4. When a peer receives a Trickle Around message for the second time, it increases the skip count metric in the message and passes it on according to the logic of the Trickle Around Algorithm.
-5. When a peer receives a Trickle Around message for the second time and the message has a skip count above `MaxSkips`, it closes the trickle around loop by forwarding this messages to the peer specified as its `head`.
-6. When a head peer does not receive a Trickle Around Acknowledgment in a `FullTrickleDuration` amount of milliseconds, it tries to send the same message but with `retries` set to the number of the current attempt.
+1. The `Head` peer sends a Trickle Around Message to the next three "random" nodes in its hat club.
+2. The `Head` peer records its hat club in the Trickle Around Message and sends it to a random node with a different hat club in its boot club as the next `Head` (_by updating the `Head` value to match this random node's address_). 
+3. Each node receiving a Trickle Around Message will first verify if it received it before, and then proceed to sending it to the next three peers in its hat club.
+4. If a node has received a message `maxTrickles` times, it does not forward it.
+5. The first node in a new hat club to receive a Trickle Around Message with a `NextHead` equals to its address is then the `Head` peer of that hat club.
+6. That next head goes on to repeat the logic of the `Head` of a club and Trickles Around that given message.
 
 The Trickle Around Algorithm is as follows:
 ```
-P <- Current Peer
+TrickleAround(M):
+  P <- Current Peer
+  
+  if MessagesPool[M].Seen == 3:
+     return
 
+  A, B, C <- PickRandomNodes(P.HatClub)
+  for E in [A, B, C]: P.Send(M, E)
+  
+  if M.Head == P.Address AND MessagesPool[M].Seen == 0:
+    N <- PickRandomNodeWithDifferentHatClub(P.BootClub)
+
+    M.Head <- N.Address
+    M.CoveredHatClubs.Push(P.HatCase)
+
+    P.Send(M, N)
+
+  MessagesMap[M].Seen++
+  
 ```
 
 #### 3. Eventual Propagation
