@@ -39,6 +39,34 @@ The sending of a Direct Event Message is an option if an implementation chooses 
 
 #### 4. Maintenance
 
+The Gemini overlay routing table consists of two parts, one containing all peers sharing an h-bits prefix and the other containing all peers having a b-bits common suffix(h and b are systematic parameters).
 
+The values for h and b define the size of these parts and add to the maintenance cost. 
 
+Gemini adopts a report-based routing table maintenance algorithm. When a membership change event occurs, the overlay will multicast this event in a report-based mechanism, which helps the overlay consumes low bandwidth to deal with Peer’s join and leave.
+
+When values of h and b are the same our maintenance is defined by the following formula:
+
+`M = (4(N) * f ) / (2^b * L)`
+
+where:
+
+`N = number of peers in the network`
+`f = redundancy of the multicast algorithm`
+
+`b = number of bits taken for the common suffix`
+`L = average lifetime of peers in seconds`
+
+Additional elements added to the basic maintenance routine will add to this cost
+
+When the maintenance cost is not acceptable by peers, Gemini also can trade hops for bandwidth consumption like other overlays by changing the params to make the routing table smaller to fit the application bandwidth needs.
+
+Example scenario:
+
+Assuming that the average lifetime of peers is 1 hour(L), all the items in the routing table have to be refreshed in a period of 1 hour.
+It means that for a system using Gemini, which consists of 5,000,000 nodes, and h and b are both set as `10`, on average every prefix/suffix-group contains 5,000,000/2^10 = `4883` peers. 
+
+Then on average, every node receives (4883+4883)*2=`19532` event messages per hour, about `5.43` messages per second. Plus heartbeats and their responses, the total message count per second will not exceed 6 messages per second. 
+
+If Messages size is 500bit, the bandwidth cost average will be around 6 message/second * 500bit = `3kbps`.
 
