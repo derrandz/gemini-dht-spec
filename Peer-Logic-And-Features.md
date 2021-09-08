@@ -91,6 +91,9 @@ TrickleAround(M):
   for E in [A, B, C]: P.Send(M, E)
   
   if M.Head == P.Address AND MessagesPool[M].Seen == 0:
+    if M.CoveredHatClubs.Length >= HatClubsCount:
+       return
+
     N <- PickRandomNodeWithDifferentHatClub(P.BootClub)
 
     M.Head <- N.Address
