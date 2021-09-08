@@ -72,10 +72,10 @@ Except that the jump will not be logarithmic but sequential and also semi-random
 
 The Trickled Around Communication model can be specified as follows:
 
-1. The head peer sends a Trickle Around message to a random peer in its hat club and a random peer in its boot club that has a different hat club (_Check [Messages In The Overlay](https://github.com/pokt-network/gemelos/wiki/Messages-In-The-Overlay) section for more information_)
-2. Each peer receiving a Trickle Around message will first see if it has already received it and is still hot*.
-3. When a peer receives a Trickle Around message for the first time, it first prepares the contents of the message for consumption and then increases the existing count metric in the received Trickle Around message, and pass it on according to the Trickle Around Algorithm
-4. When a peer receives a Trickle Around message for the second time, it increases its skip count metric and passes it on according to the logic of the Trickle Around Algorithm
+1. The head peer sends a Trickle Around message to the numerical closest peer in its hat club (_i.e: next peer_) and a random peer in its boot club that has a different hat club (_i.e: a node existing in a different hat club_) (_Check [Messages In The Overlay](https://github.com/pokt-network/gemelos/wiki/Messages-In-The-Overlay) section for more information_)
+2. Each peer receiving a Trickle Around message will first see if it has already received it.
+3. When a peer receives a Trickle Around message for the first time, it first prepares the contents of the message for consumption and then increases the count metric in the received Trickle Around message, and passes it on according to the Trickle Around Algorithm as per point (1.)
+4. When a peer receives a Trickle Around message for the second time, it increases the skip count metric in the message and passes it on according to the logic of the Trickle Around Algorithm.
 5. When a peer receives a Trickle Around message for the second time and the message has a skip count above `MaxSkips`, it closes the trickle around loop by forwarding this messages to the peer specified as its `head`.
 6. When a head peer does not receive a Trickle Around Acknowledgment in a `FullTrickleDuration` amount of milliseconds, it tries to send the same message but with `retries` set to the number of the current attempt.
 
