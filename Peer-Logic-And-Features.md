@@ -90,6 +90,14 @@ P <- Current Peer
 #### 2. Geography Aware Network
 #### 3. Reputation Aware Network (Blacklisting and stuff)
 
+### Acting Models (_Specialized Peers/Peer Roles_)
+---
+
+#### 1. Seed Nodes
+#### 2. Validator Nodes
+#### 3. Full nodes
+#### 4. N/A
+
 ### Application
 ---
 
