@@ -102,9 +102,6 @@ TrickleAround(M):
   
 ```
 
-#### 3. Eventual Propagation
-![Tree-based multicast](https://i.ibb.co/f2gpg9z/Screen-Shot-2021-09-07-at-12-37-19-AM.png)
-
 
 ### Awareness models (_Specialized states_)
 ---
