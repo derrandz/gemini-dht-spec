@@ -10,6 +10,7 @@ In this Wiki all information relative to the Gemelos specification and implement
 4. [Transport Protocols & Security](https://github.com/pokt-network/gemelos/wiki/Transport-Logic-And-Security)
 5. [Peer Logic & Features](https://github.com/pokt-network/gemelos/wiki/Peer-Logic-And-Features)
 6. [Usability Interface / Interfacing with Other Modules](https://github.com/pokt-network/gemelos/wiki/Usability-Interface)
+8. [Messages In The Overlay](https://github.com/pokt-network/gemelos/wiki/Messages-In-The-Overlay)
 
 To make sense of the aforementioned segmentation of specifications, we present this laundry list of features a p2p library might have and how they can get segmented as was done above:
 
