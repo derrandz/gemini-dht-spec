@@ -14,4 +14,4 @@ The message used to inform other peers of a member-changing event is called a Pe
 
 This message is used to share the joining of a new peer in a group and by maintenance to report unavailability or change of peer configuration.
 
-This message is usually bound to a group.
+This message is usually bound to a group and broadcasted to the members.
