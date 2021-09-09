@@ -1,10 +1,10 @@
 ## Overview
 ----
-Choosing the proper data structure to represent the structure of a network's overlay is the main and the crucial step to achieving a structured overlays, and detrimental for building an efficient and performant one.
+Choosing the proper data structure to represent the structure of a network's overlay is the main and the crucial step to achieving a structured overlay, and a detrimental one for building an efficient and performant network.
 
-In this section, we go in depth behind our decision making behind choosing Gemini as the driver behind the structure and the routing algorithm as well as describe a main specification for implementation that we hope is going to serve as a reference implementation.
+In this section, we go try to explain why we chose Gemini as the main structure and algorithm as well as describe a spec for implementation that we hope is going to serve as a reference.
 
-Before we dive in this section, we want to allude to the fact that the paper itself lacks any reference implementation, and is not very rigorous in defining Mathematical terms, so we will provide our own answers in multiple cases, so we want to make use of the following visual toolbox (_while thanking devp2p spec for the inspiration_):
+Before we dive in this section, we want to allude to the fact that the paper itself lacks any reference implementation, and is not very rigorous in defining Mathematical terms (_We've had access to three different versions_), so we will provide our own answers in multiple cases, so we want to make use of the following visual toolbox (_while thanking devp2p spec for the inspiration_):
 
 ✍🏻: A new term we chose to use for convenience purposes
 
@@ -13,25 +13,28 @@ Before we dive in this section, we want to allude to the fact that the paper its
 
 ## What is Gemini?
 ----
-Gemini is a structured overlay protocol that is efficient and scalable, Its name comes from the fact that its routing table consists of two parts, one containing nodes with common prefix and the other containing nodes with common suffix. Gemini routes messages to their destinations in just 2 hops, with a very high probability.
 
-Combine Prefix and suffix routing making peer interaction in large systems more scalable and performant.
+Gemini is a structure with an algorithm aimed to support efficient and scalable structured overlays.
+Its name comes from the fact that its routing table consists of two parts, one containing nodes with common prefix and the other containing nodes with common suffix. Gemini routes messages to their destinations in just 2 hops, with a very high probability.
+Although Gemini is not formally a O(1) routing algorithm, however it can be categorized as so. The same can be said about it if we want to categorize it as a logarithmic degree mesh or a PRR algorithm. 
+In our opinion, it has gotten the best of all worlds.
 
+You can find more information about Gemini in the following papers:
 
-// Link [Paper](https://link.springer.com/content/pdf/10.1007%2F978-3-540-24685-5_22.pdf)
-
-// Link [Paper 2 version](https://www.researchgate.net/publication/221601988_Gemini_Probabilistic_Routing_Algorithm_in_Structured_P2P_Overlay/link/53fdb64c0cf22f21c2f82a31/download)
+  1. [Gemini Paper first version](https://link.springer.com/content/pdf/10.1007%2F978-3-540-24685-5_22.pdf)
+  2. [Gemini Paper second version](https://www.researchgate.net/publication/221601988_Gemini_Probabilistic_Routing_Algorithm_in_Structured_P2P_Overlay/link/53fdb64c0cf22f21c2f82a31/download)
 
 
 ## Why Gemini?
 ----
-// Link to Forum summarizing our research effort or add in as a separate page in the wiki
+
  
-//TODO Review
-1) Gemini divides Peers into two symmetric manners, allowing for control and configuration.
-2) Gemini nodes employ items in the other dimension of groups as pointers allowing Peers to have a reduced fixed scope (smaller routing table).
-3) In Gemini whether a message can successfully reach its hat club in one hop is in some probability. Reducing this probability can trade hop count for bandwidth overhead, making Gemini more scalable than others.
-4) Unlike other overlays that are designed for file lookups, Gemini is just a substrate, making it lighter and leaving data operations to its application designers. 
+1) Gemini divides peers into a symmetric manner, allowing for maximum control and configuration.
+2) Gemini nodes employ items in the other dimension of groups as pointers allowing peers to have a reduced fixed scope with high "dispersed-ness", which means most of the network will be covered in that small scope. (smaller routing table).
+3) In Gemini whether a message can successfully reach its target in one hop is in some probability. Reducing this probability can trade hop count for bandwidth overhead, making Gemini more scalable than others.
+4) Unlike other overlays that are designed for file lookups, Gemini is just a substrate, making it lighter and leaving data operations to its application designers, and making it an ideal candidate for a role such as "Network backbone".
+5) Gemini is simple, no specifically complex classification or routing logic is required, Gemini relies on natural uniformity and distribution laws that are observably always true as long as parameters are respected, which significantly reduces human-error chances.
+6) No better candidate! You can refer to the our research summary to learn more about this. // TODO: Link to Forum summarizing our research effort or add in as a separate page in the wiki
 
 ## Specification
 ----
@@ -42,13 +45,13 @@ In this section, we will start by defining the main terms used by the paper to r
 
 * **Hat case**: first `h` bits of a node's ID
 * **Boot case**: last `b` bits of a node's ID
-* **Node id**: an ID resulting from _uniformly distributed hash function*_ 
-* **Numerically close**: A node A is closest to node B if: _for every node x out of node A's neighbors `|IDa - IDb| < |IDa - IDx|`_
-* **Numerically closest** (🗝): node A's ID is the numerically closest node to itself such that: `|IDa - IDa| = 0 and 0 < |IDa - IDx|`
-* **Hat club**: The set of nodes such that their IDs first `h` bits are the same as concerned node
-* **Boot club**: The set of nodes such that their IDs first `b` bits are the same as concerned node
-* **Root node / Destination node**: The destination ID from a message M such that M's destination ID is _**numerically closest**_ to the concerned node's ID
-* **Center of a club** (✍🏻): Is the concerned node in a hat club. If we take node X, node X is the center of its own Hat and Boot Clubs.
+* **Node id**: an ID resulting from a _uniformly distributed hash function*_ 
+* **Numerically close**: A random node A is said to be the numerically closest to node B if: _for every node X out of node A's neighbors `|IDa - IDb| < |IDa - IDx|`_
+* **Numerically closest** (🗝): A random node A's ID is the numerically closest node to a node B if: _For every node X in node B's neighbors_: `min(|IDa - IDx|) => X = B`. We can say that node A is the numerically closest node to itself since: `|IDa - IDa| = 0 and 0 < |IDa - IDx|`
+* **Hat club**: The set of nodes sharing the same first `h` bits of their IDs
+* **Boot club**: The set of nodes sharing the same last `b` bits of their IDs
+* **Root node / Destination node**: The destination ID of a message M is the _**numerically closest**_ ID to M's target.
+* **Head of club** (✍🏻): Is the concerned node in a hat club. If we are routing from node X, node X is then said to be the head of its own Hat and Boot Clubs.
 
 > To learn more about the nature and structure of the IDs used with this algorithm, please refer to [Node Identification And Security](https://github.com/pokt-network/gemelos/wiki/Node-Identification-And-Security)
 
@@ -70,10 +73,10 @@ We define `n` as the length of IDs assigned to node, A hat club is represented a
 
 In a given hat club:
 
-  * IDs are ordered on a N>>2^n ring according to their _**numerical closeness**_ to the center's ID (representing "the start point on the ring").
+  * IDs are ordered on a N>>2^n ring according to their _**numerical closeness**_ to the head's ID (representing "the start point on the ring").
   * IDs partaking in a hat club are all unique.
-  * A hat club can measure the distance between a given ID and its center ID's.
-  * A hat club can calculate the **numerically closest* ID(s) to its center.
+  * A hat club can measure the distance between a given ID and its head's ID.
+  * A hat club can calculate the **numerically closest* ID(s) to its head.
 
 #### Boot Club
 
@@ -83,8 +86,8 @@ In a given boot club:
 
   * IDs are ordered on a N>>2^n ring according to their _**numerical closeness**_ to center's ID (representing "the start point on the ring").
   * IDs partaking in a boot club are all unique.
-  * A boot club can measure the distance between a given ID and its center ID's.
-  * A boot club can calculate the **numerically closest* ID to its center.
+  * A boot club can measure the distance between a given ID and its head's ID.
+  * A boot club can calculate the **numerically closest* ID to its head.
 
 ### 3. Routing Algorithm
 ---
@@ -93,6 +96,8 @@ To route a given message M, we define the following properties of the message th
 
   * A message has a n bits long destination ID
   * A message has a n bits long sender ID
+
+(_To learn more about messages, please refer to [Messages In The Overlay](https://github.com/pokt-network/hydrate/wiki/Messages-In-The-Overlay)_)
 
 To route a message M, node N does the following:
 
