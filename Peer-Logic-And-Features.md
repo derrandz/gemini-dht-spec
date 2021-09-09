@@ -9,10 +9,10 @@ In specific terms, this section deals with communication models (_or specialized
 ---
 
 ## Why Peer Logic
---
+---
 
 ## Specification
---
+---
 
 First, we need to discuss a few things a **_peer needs to do in the network_**. We are interested in the two main state-touching scenarios:
 
