@@ -8,10 +8,13 @@ The dynamics of peer participation, or churn, are an inherent property of Peer-t
 
 We can briefly define churn as the process of peers leaving and entering the system continuously. Churn Management tackles the common tasks based on the interactions of the peers.
 
+## Why Churn Management?
+----
+
 ## Specification
 ----
 
-#### 1. Discovery
+### 1. Discovery
 
 Peers need to be able to discover other Peers based on their perspective of the network.
 
@@ -23,13 +26,13 @@ This allows for an on-demand discovery of peers through hops, harnessing the abi
 
 A Specialized Peer type that helps the standard Peer on discovery tasks should exist if we need advanced capabilities for discovery. But a basic defined logic should exist on all peers that allow the network to not depend on the specialized peer for basic performance.
 
-#### 2. Join
+### 2. Join
 
 When a new Peer X joins the network, it first contacts an existing bootstrap peer E. Peer E picks a Peer H with X’s hat(prefix) from its bootcase(suffix group), as well as a Peer B with X’s boot(suffix) from its hatcase(prefix group). X collects its hatcase from H and bootcase from B. If E does not find appropriate H or B, it asks another Peer in its hat or bootcase for help.
 
 This way a Peer that joins is paired with its corresponding Prefix and Suffix groups, which should provide sufficient peering for the application needs.
 
-#### 3. Leave
+### 3. Leave
 
 A peer that wants to leave the network basically disconnects and relies on the maintenance routine to broadcast its unavailability.
 
@@ -39,7 +42,7 @@ Peer responses to Heartbeat messages can be used by an implementation to profile
 
 The sending of a Direct Event Message is an option if an implementation chooses to allow regular peering with elements outside of the prefix/suffix groups. This will marginally increase maintenance/bandwith costs but allows for a more flexible communication path if required.
 
-#### 4. Maintenance
+### 4. Maintenance
 
 The Gemini overlay routing table consists of two parts, one containing all peers sharing an h-bits prefix and the other containing all peers having a b-bits common suffix(h and b are systematic parameters).
 
@@ -63,7 +66,7 @@ Additional elements added to the basic maintenance routine will add to this cost
 
 When the maintenance cost is not acceptable by peers, Gemini also can trade hops for bandwidth consumption like other overlays by changing the params to make the routing table smaller to fit the application bandwidth needs.
 
-Example scenario:
+##### Example scenario:
 
 Assuming that the average lifetime of peers is 1 hour(L), all the items in the routing table have to be refreshed in a period of 1 hour.
 It means that for a system using Gemini, which consists of 5,000,000 nodes, and h and b are both set as `10`, on average every prefix/suffix-group contains 5,000,000/2^10 = `4883` peers. 
