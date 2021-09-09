@@ -1,1 +1,21 @@
-// TODO
+## Node Identification
+----------
+
+Gemini assigns every Peer an ID typically 64-bit or 128-bit long. 
+
+These IDs could be derived from a key using a hash function like SHA1 if the application already has an ID/key.
+
+The requirement for node Identification are: 
+1. ID should be unique
+2. Consistent bit size for ID
+3. Generation of IDs is uniformly distributed in the ID space
+
+
+## Security
+----------
+
+
+
+
+
+
