@@ -50,7 +50,7 @@ In this section, we will start by defining the main terms used by the paper to r
 * **Numerically closest** (🗝): A random node A's ID is the numerically closest node to a node B if: _For every node X in node B's neighbors_: `min(|IDa - IDx|) => X = B`. We can say that node A is the numerically closest node to itself since: `|IDa - IDa| = 0 and 0 < |IDa - IDx|`
 * **Hat club**: The set of nodes sharing the same first `h` bits of their IDs
 * **Boot club**: The set of nodes sharing the same last `b` bits of their IDs
-* **Root node / Destination node**: The destination ID of a message M is the _**numerically closest**_ ID to M's target.
+* **Root node / Destination node**: The destination node of a Message M is the node with the ID which is the _**numerically closest**_ ID to M's destination ID. (_please make the distinction between destination node and destination ID_)
 * **Head of club** (✍🏻): Is the concerned node in a hat club. If we are routing from node X, node X is then said to be the head of its own Hat and Boot Clubs.
 
 > To learn more about the nature and structure of the IDs used with this algorithm, please refer to [Node Identification And Security](https://github.com/pokt-network/gemelos/wiki/Node-Identification-And-Security)
