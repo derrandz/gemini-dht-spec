@@ -28,7 +28,7 @@
 
 * basic bounded connection pool for regular operation with persistent peering options
 
-Specialized bounded pools for application use cases:
+* Specialized bounded pools for application use cases:
 
 
 ### 3. Protocol
