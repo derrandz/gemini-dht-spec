@@ -10,22 +10,6 @@ The requirement for node Identification are:
 2. Consistent bit size for ID
 3. Generation of IDs is uniformly distributed in the ID space
 
-## What is Node Identification
----
-
-## Why Node Identification
----
-
-## Specification
----
-
-## What is  Security
----
-
-
-## Why Node Security
----
-
 ## Specification
 ---
 
