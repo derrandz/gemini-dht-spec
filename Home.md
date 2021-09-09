@@ -1,28 +1,34 @@
-Welcome to the gemelos wiki!
+Welcome to wiki of the the peer-to-peer layer of Pocket Network 1.0!
 
-Gemelos is the p2p layer powering Pocket Network 1.0
+We are calling it: Hydrate, as in hydra because we are leveraging a multitude of solutions, and hydrate as in make your p2p layer come to life.
 
-In this Wiki all information relative to the Gemelos specification and implementation, respecting the following order:
+In this Wiki all information relative to the Hydrate specification and implementation, respecting the following order:
 
 1. [Routing Structure and Algorithms](https://github.com/pokt-network/gemelos/wiki/Routing-Algorithm-And-Structure)
+
+   In the first part of this Wiki, we attend in detail to the backbone data-structure of the routing for Hydrate as well as the algorithm and give detailed insight into scalability and performance.
+
+
 2. [Churn Management](https://github.com/pokt-network/gemelos/wiki/Churn-Management)
+   
+   In the second part, we lay down the mechanisms and strategies for peer discovery, join and leave and overall network maintenance
+
 3. [Node Identification & Security](https://github.com/pokt-network/gemelos/wiki/Node-Identification-And-Security)
+   
+   In the third, we describe the the requirements the node identification and security requirements the network has to meet to support the other parts.
+
 4. [Transport Protocols & Security](https://github.com/pokt-network/gemelos/wiki/Transport-Logic-And-Security)
+
+   Fourthly but not lastly, we touch on the transport layer of Hydrate and its maintenance and management.
+
 5. [Peer Logic & Features](https://github.com/pokt-network/gemelos/wiki/Peer-Logic-And-Features)
-6. [Usability Interface / Interfacing with Other Modules](https://github.com/pokt-network/gemelos/wiki/Usability-Interface)
-8. [Messages In The Overlay](https://github.com/pokt-network/gemelos/wiki/Messages-In-The-Overlay)
+   
+   On the fifth, we describe the smarter part of the network that enables the chain, primarily dealing with how to classify peers per role, enforcing bans, and sending specific message types using specific communication models as well as handling stateful communication, such as neighboring chain heights and what not.
 
-To make sense of the aforementioned segmentation of specifications, we present this laundry list of features a p2p library might have and how they can get segmented as was done above:
+6. [Messages In The Overlay](https://github.com/pokt-network/gemelos/wiki/Messages-In-The-Overlay)
+ 
+   In this section, we specify the currently known and allowed message types in the peer-to-peer layer.
 
-1. find peers **[Churn Management]**
-2. classify peers (nodes, validators, full nodes, Listeners) **[Peer Logic & Features]**
-3. Help other nodes find peers (answers peering info requests) **[Churn Management]**
-4. Measure peer response times and lack of response **[Churn Management]**
-5. Receive messages and route them to correct module or message queue. **[Routing Structure and Algorithm(s)]**
-6. Enforce peer bans **[Peer Logic & Features]**
-7. Send messages according to message type (direct, gossip, multicast) **[Peer Logic & Features]**
-8. Collect peer height and sync state. **[Peer Logic & Features]**
-9. Handle and dispatch block sync requests from other modules. **[Peer Logic & Features]**
-10. Handle and reply to block requests from peers. **[Peer Logic & Features]**
+7. [Usability Interface / Interfacing with Other Modules](https://github.com/pokt-network/gemelos/wiki/Usability-Interface)
 
-And so on and so forth. By no means this is an exhaustive list, but rather an example to help remove jargon fever if the segmentation in list feels too abstract.
+   [...]
