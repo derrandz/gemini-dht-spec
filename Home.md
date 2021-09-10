@@ -35,4 +35,8 @@ In this Wiki all information relative to the Hydrate specification and implement
 
 ## Useful indications
 
-💡 indicates an implementation avenue or suggestion
+💡: indicates an implementation avenue or suggestion
+
+✍🏻: A new term we chose to use for convenience purposes
+
+🗝: Key concept that should be paid attention to
