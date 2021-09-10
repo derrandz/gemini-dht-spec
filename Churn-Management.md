@@ -91,16 +91,17 @@ where:
 * `L = average lifetime of peers in seconds`
 
 **Additional elements added to the basic maintenance routine will add to this cost.**
+
 **Also, this cost is per `L` duration of time**
 
 When the maintenance cost is not acceptable by peers, Gemini can also trade hops for bandwidth consumption like other overlays by changing the params to make the routing table smaller to fit the application bandwidth needs.
 
 ##### Example scenario:
 
-Assuming that the average lifetime of peers is 1 hour(L), all the items in the routing table have to be refreshed in a period of 1 hour.
-It means that for a system using Gemini, which consists of 5,000,000 nodes, and h and b are both set as `10`, on average every prefix/suffix-group contains 5,000,000/2^10 = `4883` peers. 
+Assuming that the average lifetime of peers is 1 hour (_L=3600_), all the items in the routing table have to be refreshed in a period of 1 hour.
+It means that for a system using Gemini, consisting of 5,000,000 peers, while `h` and `b` are both set to `10`, on average every hat/boot club will contain 5,000,000/2^10 = `4883` peers. 
 
-Then on average, every node receives (4883+4883)*2=`19532` event messages per hour, about `5.43` messages per second. Plus heartbeats and their responses, the total message count per second will not exceed 6 messages per second. 
+Then on average, every node receives `(4883+4883)*2=19532` event messages per hour, about `5.43` messages per second, plus heartbeats and their responses, the total message count per second will not exceed 6 messages per second. 
 
-If Messages size is 500bit, the bandwidth cost average will be around 6 message/second * 500bit = `3kbps`.
+If message size is 500bit, the bandwidth cost average will be around: `6 message/second * 500bit = 3kbps`.
 
