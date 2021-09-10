@@ -8,8 +8,7 @@ In specific terms, this section deals with communication models (_or specialized
 ## What is Peer Logic
 ---
 
-## Why Peer Logic
----
+
 
 ## Specification
 ---
