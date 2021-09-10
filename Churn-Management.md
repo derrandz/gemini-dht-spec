@@ -107,13 +107,14 @@ If message size is 500bit, the bandwidth cost average will be around: `6 message
 
 **Summary table**
 
-| Parameter      | Value   |
-|----------------|---------|
-| N              |  5M     |
-| h              |   10    |
-| b              |   10    |
-| H              |   4882  |
-| B              |   4882  |
-| L              |   3600  |
-| Messages per L |   19532 |
-| cost in Kbs    |   3kbps |
+| Parameter           | Value   |
+|---------------------|---------|
+| N                   |  5M     |
+| h                   |   10    |
+| b                   |   10    |
+| H                   |   4882  |
+| B                   |   4882  |
+| L                   |   3600  |
+| Messages per L      |   19532 |
+| Message size (bit)  |   500   |
+| cost in Kbs         |   3kbps |
