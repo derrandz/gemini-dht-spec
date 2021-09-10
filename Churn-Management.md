@@ -72,27 +72,28 @@ If `T` failures happened, the peer then multicasts the unavailability of the ver
 
 ### 4. Maintenance
 
-The Gemini overlay routing table consists of two parts, one containing all peers sharing an h-bits prefix and the other containing all peers having a b-bits common suffix(h and b are systematic parameters).
+As explained before, the Gemini overlay routing table consists of two parts, a hat club and a boot club, the first one containing all peers sharing the same h-bits prefix and the latter containing all peers sharing the same b-bits suffix (_h and b are systematic parameters_).
 
-The values for h and b define the size of these parts and add to the maintenance cost. 
+The values for h and b define the size of these clubs and add to the maintenance cost. (_Refer to [Routing Structure And Algorithm](https://github.com/pokt-network/hydrate/wiki/Routing-Algorithm-And-Structure) to revisit Gemini paramters_) 
 
-Gemini adopts a report-based routing table maintenance algorithm. When a membership change event occurs, the overlay will multicast this event in a report-based mechanism, which helps the overlay consumes low bandwidth to deal with Peer’s join and leave.
+Gemini adopts a report-based routing table maintenance algorithm.
+When a membership change event occurs, the overlay will multicast this event in a report-based mechanism, which helps the overlay consume low bandwidth to deal with peers' join and leave.
 
-When values of h and b are the same our maintenance is defined by the following formula:
+When values of `h` and `b` are the same, our maintenance is defined by the following formula:
 
 `M = (4(N) * f ) / (2^b * L)`
 
 where:
 
-`N = number of peers in the network`
-`f = redundancy of the multicast algorithm`
+* `N = number of peers in the network`
+* `f = redundancy of the multicast algorithm`
+* `b = number of bits taken for the common suffix`
+* `L = average lifetime of peers in seconds`
 
-`b = number of bits taken for the common suffix`
-`L = average lifetime of peers in seconds`
+**Additional elements added to the basic maintenance routine will add to this cost.**
+**Also, this cost is per `L` duration of time**
 
-Additional elements added to the basic maintenance routine will add to this cost
-
-When the maintenance cost is not acceptable by peers, Gemini also can trade hops for bandwidth consumption like other overlays by changing the params to make the routing table smaller to fit the application bandwidth needs.
+When the maintenance cost is not acceptable by peers, Gemini can also trade hops for bandwidth consumption like other overlays by changing the params to make the routing table smaller to fit the application bandwidth needs.
 
 ##### Example scenario:
 
