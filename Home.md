@@ -32,3 +32,7 @@ In this Wiki all information relative to the Hydrate specification and implement
 7. [Usability Interface / Interfacing with Other Modules](https://github.com/pokt-network/gemelos/wiki/Usability-Interface)
 
    [...]
+
+## Useful indications
+
+💡 indicates an implementation avenue or suggestion
