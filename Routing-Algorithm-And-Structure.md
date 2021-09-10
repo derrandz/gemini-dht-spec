@@ -102,10 +102,10 @@ To route a given message M, we define the following properties of the message th
 To route a message M, node N does the following:
 
   1. Verify if the destination ID of the message M belongs to N's hat club.
-    1.a If M's destination ID belongs to N's hat club, N routes the message to the **numerically closest** ID to the M's destination ID
-    1.b If not, N looks for a node E in its boot club such that E's ID is in the same club as in M's destination ID.
-      1.b.a If found, node N routes the message M to node E
-      1.b.b If not, node N routes E to a randomly picked node from its hat case such that E's ID is in a different boot case than M's destination ID.
+     1.a If M's destination ID belongs to N's hat club, N routes the message to the **numerically closest** ID to the M's destination ID
+     1.b If not, N looks for a node E in its boot club such that E's ID is in the same hat club as in M's destination ID.
+       1.b.a If found, node N routes the message M to node E
+       1.b.b If not, node N routes E to a randomly picked node from its hat case such that E's ID has a different boot case than M's destination ID.
 
 Written in pseudo-code, the Gemini routing algorithm is as follows:
 ```
@@ -122,17 +122,115 @@ route(M):
          Route to E;
          return;
  
-  E <- null
-  for every e in HatClub(N):
-    if not (E belongs to BootClub(destID))
-    then:
-      E <- e
+  Found, E, Attempts <- False, Null, 0
+  while !Found && Attempts < Length(HatClub(N):
+    RandomNode <- PickRandomNode(HatClub(N)
+    if not RandomNode belongs to BootClub(destID):
+       E <- RandomNode
+       Found <- true;
+       return
+    else
+      Attempts++;
 
   Route to E.
 ```
 
 ### 4. Maintenance
 ----
+
+A peer cares to maintain only its reduced fixed scope of the network, that is its hat and boot clubs. To be able to maintain an updated view of the network, a Gemini peer sends periodic heartbeats to its clubs members and updates it state accordingly.
+
+To see the full details of this process, please refer to the [Maintenance](https://github.com/pokt-network/hydrate/wiki/Churn-Management#4-maintenance) Section in [Churn Management](https://github.com/pokt-network/hydrate/wiki/Churn-Management) Chapter of this wiki/spec.
+
+### 5. Network Parameters and Scalability
+
+So far, we've only talked about Gemini using abstract undefined parameters, specifically:
+
+ 1. `N`: Network size
+ 2. `n`: Peer IDs/Addresses Length
+ 3. `h`: Hat case length
+ 4. `b`: Boot case length
+
+Without going into the full details of how these parameters influence the routing probability (_which is clearly and thoroughly available in the paper_), we will present our data findings as per our [simulation efforts](https://docs.google.com/spreadsheets/d/13nhNu94_lFnfuSl-4eonAGY72sX3n1bICKFyODkCTU0/edit?usp=sharing) to give you an idea about the scalability of the structure.
+
+Before we start to present the data, we would like to remind you of the promise of Gemini, that is, if you set your parameters correctly, you will be able to perform routing in 2 hops 99% of the time.
+
+##### Optimal parameters for a 6000 peers network:
+
+| Parameter                        |        |
+|----------------------------------|--------|
+| N                                |  6000  |
+| h                                |   5    |
+| b                                |   3    |
+| H                                |   32   |
+| B                                |   8    |
+| Probability of Routing in 2 hops |   96%  |
+| Routing State Size               |   937  |
+
+##### Optimal theoretical parameters for a 10K peers network:
+
+
+| Parameter                        |         |
+|----------------------------------|---------|
+| N                                |  10000  |
+| h                                |   4     |
+| b                                |   4     |
+| H                                |   16    |
+| B                                |   16    |
+| Probability of Routing in 2 hops |   97%   |
+| Routing State Size               |   1250  |
+ 
+
+
+##### Optimal theoretical parameters for a 100K peers network:
+
+| Parameter                        |          |
+|----------------------------------|----------|
+| N                                |  100000  |
+| h                                |    9     |
+| b                                |    9     |
+| H                                |   512    |
+| B                                |   512    |
+| Probability of Routing in 2 hops |   100%   |
+| Routing State Size               |   390    |
+
+> We've omitted other sizes such as 1M to 1B just due to the mere fact that Excel can't support that much and we will need to use a more sophisticated tool.
+
+##### Optimal theoretical parameters for a 5M peers network:
+
+| Parameter                        |           |
+|----------------------------------|-----------|
+| N                                |  5000000  |
+| h                                |    10     |
+| b                                |    10     |
+| H                                |   1024    |
+| B                                |   1024    |
+| Probability of Routing in 2 hops |   99%     |
+| Routing State Size               |   9765    |
+
+##### Real life experimentation data
+
+| Parameter                        |           |
+|----------------------------------|-----------|
+| N                                |  6000     |
+| h                                |    5      |
+| b                                |    5      |
+| H                                |   32      |
+| B                                |   32      |
+| Probability of Routing in 2 hops |   94%     |
+| Routing State Size               |   375     |
+
+Commentary: 
+
+In a simulation involving 2000 randomly picked peers out of 6000:
+
+ * 1701 Requests for unique routing performed (_no redundant peers_)
+ * 1641 routes happened in 2 hops
+ * 60 routes happened in 1 hops
+
+Meaning: 94% of the request happened in 2 hops, whilst the rest happened in exactly 1 hop, with 0 undefined behavior cases.
+
+(_The real life simulation is available at [hydrate/examples/routing-simulation.go](https://github.com/pokt-network/hydrate/main/examples/routing-simulation.go)_)
 
 ## How Does Gemini Impact The Other Parts
 ----
