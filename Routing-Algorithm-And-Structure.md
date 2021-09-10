@@ -232,13 +232,19 @@ Meaning: 94% of the request happened in 2 hops, whilst the rest happened in exac
 
 (_The real life simulation is available at [hydrate/examples/routing-simulation.go](https://github.com/pokt-network/hydrate/main/examples/routing-simulation.go)_)
 
+### 7. Edge cases
+
+As the network size is not a constant, and rather grows and shrinks, we are interested in accounting the edge cases resulting from not having as many peers in the network, such as when a peer happens to be the only current peer in a given hat or boot club, what happens then?
+
+For such cases, we would like to go implement the leveled routing state logic borrowed from PRR algorithms such as Pastry and Tapestry, by implementing hat clubs and boot clubs for consecutive levels up to `h` for Hat clubs and up to `b` for boot clubs.
+
+The lower the level, the broader the scope of the peer.
+
+// Todo discuss with other whether such state is readily available or rather on-demand from a seed node.
+
+
 ## How Does Gemini Impact The Other Parts
 ----
 
-1. Club (_hat and boot_) elements are interconnected, how does this influence outbound/inbound connections?
-
-### Open questions
-
-1. What happens if I am the only element in my hat and boot club?
-   * lowest h and b
-   * multi level routing table (h=b=5, h=b=4, h=b=3, h=b=2)
+1. Club (_hat and boot_) elements are interconnected, meaning that there is a cost to maintaining that interconnected, how does this influence outbound/inbound connections count and pooling?
+   A. Answer available at [Transport Logic And Security](https://github.com/pokt-network/gemelos/wiki/Transport-Logic-And-Security) chapter.
