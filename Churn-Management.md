@@ -105,3 +105,15 @@ Then on average, every node receives `(4883+4883)*2=19532` event messages per ho
 
 If message size is 500bit, the bandwidth cost average will be around: `6 message/second * 500bit = 3kbps`.
 
+**Summary table**
+
+| Parameter      | Value   |
+|----------------|---------|
+| N              |  5M     |
+| h              |   10    |
+| b              |   10    |
+| H              |   4882  |
+| B              |   4882  |
+| L              |   3600  |
+| Messages per L |   19532 |
+| cost in Kbs    |   3kbps |
