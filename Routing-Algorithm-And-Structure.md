@@ -4,12 +4,16 @@ Choosing the proper data structure to represent the structure of a network's ove
 
 In this section, we go try to explain why we chose Gemini as the main structure and algorithm as well as describe a spec for implementation that we hope is going to serve as a reference.
 
-Before we dive in this section, we want to allude to the fact that the paper itself lacks any reference implementation, and is not very rigorous in defining Mathematical terms (_We've had access to three different versions_), so we will provide our own answers in multiple cases, so we want to make use of the following visual toolbox (_while thanking devp2p spec for the inspiration_):
+Before we dive in this section, we want to allude to the fact that the paper itself lacks any reference implementation, and is not very rigorous in defining Mathematical terms (_We've had access to three different versions_), so we will provide our own answers in multiple cases.
+
+*A reminder of our visual toolbox* (_while thanking devp2p spec for the inspiration_):
+
+
+💡: indicates an implementation avenue or suggestion
 
 ✍🏻: A new term we chose to use for convenience purposes
 
 🗝: Key concept that should be paid attention to
-
 
 ## What is Gemini?
 ----
