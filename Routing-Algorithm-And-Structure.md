@@ -6,7 +6,7 @@ In this section, we go try to explain why we chose Gemini as the main structure 
 
 Before we dive in this section, we want to allude to the fact that the paper itself lacks any reference implementation, and is not very rigorous in defining Mathematical terms (_We've had access to three different versions_), so we will provide our own answers in multiple cases.
 
-*A reminder of our visual toolbox* (_while thanking devp2p spec for the inspiration_):
+**A reminder of our visual toolbox** (_while thanking devp2p spec for the inspiration_):
 
 
 💡: indicates an implementation avenue or suggestion
