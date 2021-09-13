@@ -44,4 +44,4 @@ TBD
 ----
 Peer connections could be encrypted using AES 256-bit Galois Counter Mode (GCM) with a Curve25519 shared key established by an Elliptic-Curve Diffie-Hellman Handshake.
 
-Very similar to how TLS handshakes
+Very similar to TLS handshakes
