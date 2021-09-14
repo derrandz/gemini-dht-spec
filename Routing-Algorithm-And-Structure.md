@@ -243,9 +243,41 @@ Meaning: 94% of the request happened in 2 hops, whilst the rest happened in exac
 #### Elastic Network
 
 ##### Description
-As the network size is not a constant, and rather grows and shrinks, we are interested in accounting the edge cases resulting from not having as many peers in the network, such as when a peer happens to be the only current peer in a given hat or boot club, what happens then?
+As network size is not constant, but rather grows and shrinks, we are interested in accounting for the edge case when not as many peers in the network lead to a peers being the only peers in a their respective hat or boot clubs, making them lonely unreachable islands in terms of routing.
 
-For such cases, we would like to implement the leveled routing state logic borrowed from PRR algorithms such as Pastry and Tapestry, by implementing hat clubs and boot clubs for consecutive levels up to `h` for Hat clubs and up to `b` for boot clubs, but also rely on "leafset" or "neighboring set" logic for maintenance to make sure that the way we organize and consume the routing state never trips up the churn management procedures.
+To further gain insight on such behavior, we've ran a little experiment to see at which node count do lonely islands appear and disappear. (Code available at [Hydrate/examples/distribution.go](https://github.com/pokt-network/hydrate/blob/main/examples/cmd/gemini/distribution.go))
+
+The results were as follows:
+
+| Node Count | FIsolated | PIsolated | RF %  |
+| :--------- | :-------: | --------: | ----: |
+| 50         | 2         | 8         | 0.92  |
+| 100        | 0         | 4         | 0.66  |
+| 150        | 0         | 1         | 0.57  |
+| 200        | 0         | 0         | 0.22  |
+| 250        | 0         | 0         | 0.26  |
+| 300        | 0         | 0         | 0.02  |
+| 350        | 0         | 0         | 0.01  |
+| 400        | 0         | 0         | 0     |
+| 450        | 0         | 0         | 0     |
+| 500        | 0         | 0         | 0     |
+| 550        | 0         | 0         | 0     |
+| 600        | 0         | 0         | 0     |
+| 650        | 0         | 0         | 0     |
+| 700        | 0         | 0         | 0     |
+| 750        | 0         | 0         | 0     |
+| 800        | 0         | 0         | 0     |
+| 850        | 0         | 0         | 0     |
+| 900        | 0         | 0         | 0     |
+| 950        | 0         | 0         | 0     |
+
+![Data showing isolation increase/decrease according to network growth](https://i.ibb.co/M6LsynB/Screen-Shot-2021-09-15-at-1-29-53-AM.png)
+
+We can clearly state that routing failures start to disappear at 300 peers, but that does not mean we are at maximal routing efficiency. (_Some routes were happening after 100 hops_)
+
+To be able to accommodate for the phase when the network is either still growing and below 1000 (_we are setting 1000 as to when routing is near maximal efficiency_) or has shrunk down, we would like to implement a few intermediate strategies to ensure that the network (_even at the worst of partitions, say 10 nodes are the only nodes alive_) we can still perform chain capabilities flawlessly.
+
+For this, we would like to fallback onto the leveled routing state logic borrowed from PRR algorithms such as Pastry and Tapestry, by implementing hat clubs and boot clubs for consecutive levels up to `h` for Hat clubs and up to `b` for boot clubs, but also rely on "leafset" or "neighboring set" logic for maintenance to make sure that the way we organize and consume the routing state never trips up the churn management procedures.
 
 And top it off, we suggest to implement Kelips' OneHop logic of maintaining the whole network state in all nodes for small network sizes.
 
