@@ -147,6 +147,7 @@ A peer cares to maintain only its reduced fixed scope of the network, that is it
 To see the full details of this process, please refer to the [Maintenance](https://github.com/pokt-network/hydrate/wiki/Churn-Management#4-maintenance) Section in [Churn Management](https://github.com/pokt-network/hydrate/wiki/Churn-Management) Chapter of this wiki/spec.
 
 ### 5. Network Parameters and Scalability
+----
 
 So far, we've only talked about Gemini using abstract undefined parameters, specifically:
 
@@ -237,12 +238,20 @@ Meaning: 94% of the request happened in 2 hops, whilst the rest happened in exac
 (_The real life simulation is available at [hydrate/examples/routing-simulation.go](https://github.com/pokt-network/hydrate/main/examples/routing-simulation.go)_)
 
 ### 7. Edge cases
+---
 
+#### Elastic Network
+
+##### Description
 As the network size is not a constant, and rather grows and shrinks, we are interested in accounting the edge cases resulting from not having as many peers in the network, such as when a peer happens to be the only current peer in a given hat or boot club, what happens then?
 
-For such cases, we would like to go implement the leveled routing state logic borrowed from PRR algorithms such as Pastry and Tapestry, by implementing hat clubs and boot clubs for consecutive levels up to `h` for Hat clubs and up to `b` for boot clubs.
+For such cases, we would like to implement the leveled routing state logic borrowed from PRR algorithms such as Pastry and Tapestry, by implementing hat clubs and boot clubs for consecutive levels up to `h` for Hat clubs and up to `b` for boot clubs, but also rely on "leafset" or "neighboring set" logic for maintenance to make sure that the way we organize and consume the routing state never trips up the churn management procedures.
+
+And top it off, we suggest to implement Kelips' OneHop logic of maintaining the whole network state in all nodes for small network sizes.
 
 The lower the level, the broader the scope of the peer.
+
+##### Formalization
 
 // Todo discuss with other whether such state is readily available or rather on-demand from a seed node.
 
