@@ -235,7 +235,7 @@ In a simulation involving 2000 randomly picked peers out of 6000:
 
 Meaning: 94% of the request happened in 2 hops, whilst the rest happened in exactly 1 hop, with 0 undefined behavior cases.
 
-(_The real life simulation is available at [hydrate/examples/routing-simulation.go](https://github.com/pokt-network/hydrate/main/examples/routing-simulation.go)_)
+(_The real life simulation is available at [hydrate/examples/routing-simulation.go](https://github.com/pokt-network/hydrate/blob/main/examples/cmd/gemini/routing.go)_)
 
 ### 7. Edge cases
 ---
