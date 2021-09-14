@@ -281,7 +281,7 @@ For this, we would like to fallback onto the leveled routing state logic borrowe
 
 And top it off, we suggest to implement Kelips' OneHop logic of maintaining the whole network state in all nodes for small network sizes.
 
-The lower the level, the broader the scope of the peer.
+We can think of this as: the smaller the network, the broader the scope of the peer (_ the larger the routing state_).
 
 ##### Formalization
 
