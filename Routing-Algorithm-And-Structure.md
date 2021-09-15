@@ -273,9 +273,13 @@ The results were as follows:
 
 ![Data showing isolation increase/decrease according to network growth](https://i.ibb.co/M6LsynB/Screen-Shot-2021-09-15-at-1-29-53-AM.png)
 
+
 We can clearly state that routing failures start to disappear at 300 peers, but that does not mean we are at maximal routing efficiency. (_Some routes were happening after 100 hops_)
 
 To be able to accommodate for the phase when the network is either still growing and below 1000 (_we are setting 1000 as to when routing is near maximal efficiency_) or has shrunk down, we would like to implement a few intermediate strategies to ensure that the network (_even at the worst of partitions, say 10 nodes are the only nodes alive_) we can still perform chain capabilities flawlessly.
+
+To further give an idea about how the routing efficiency behaves in function of the network size (_for h=b=5_), we present the following graph:
+![Hr in Function of Network Size](https://i.ibb.co/dm3RHys/Screen-Shot-2021-09-15-at-1-58-34-AM.png)
 
 For this, we would like to fallback onto the leveled routing state logic borrowed from PRR algorithms such as Pastry and Tapestry, by implementing hat clubs and boot clubs for consecutive levels up to `h` for Hat clubs and up to `b` for boot clubs, but also rely on "leafset" or "neighboring set" logic for maintenance to make sure that the way we organize and consume the routing state never trips up the churn management procedures.
 
