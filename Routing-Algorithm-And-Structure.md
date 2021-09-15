@@ -286,9 +286,7 @@ To further give an idea about how the routing efficiency behaves in function of 
 
 ![Hr in Function of Network Size](https://i.ibb.co/dm3RHys/Screen-Shot-2021-09-15-at-1-58-34-AM.png)
 
-For this, we would like to fallback onto the leveled routing state logic borrowed from PRR algorithms such as Pastry and Tapestry, by implementing hat clubs and boot clubs for consecutive levels up to `h` for Hat clubs and up to `b` for boot clubs, but also rely on "leafset" or "neighboring set" logic for maintenance to make sure that the way we organize and consume the routing state never trips up the churn management procedures.
-
-And top it off, we suggest to implement Kelips' OneHop logic of maintaining the whole network state in all nodes for small network sizes.
+For this, we would like to fallback to using a Kelips' O(1) logic of maintaining the whole network state in all nodes for small network sizes.
 
 We can think of this as: the smaller the network, the broader the scope of the peer (_the larger the routing state_).
 
