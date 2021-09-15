@@ -1,3 +1,5 @@
+# This is a living page, we've very recently identified a serious optimization so this is for now not ready for consumption.
+
 ## Overview
 ----
 Choosing the proper data structure to represent the structure of a network's overlay is the main and the crucial step to achieving a structured overlay, and a detrimental one for building an efficient and performant network.
@@ -15,6 +17,25 @@ Before we dive in this section, we want to allude to the fact that the paper its
 
 🗝: Key concept that should be paid attention to
 
+## (WIP) Problematic
+----
+
+## (WIP) Proposed Solution: Constant Hop Affinity DHTs (CHAD)
+----
+
+In short: CHAD = Kelips + Gemini
+
+## (WIP) Why CHAD?
+----
+
+### (WIP) What is an Affinity DHT?
+
+#### (WIP) Kelips
+
+#### (WIP) Gemini
+
+#### (WIP) CHAD
+
 ## What is Gemini?
 ----
 
@@ -27,11 +48,10 @@ You can find more information about Gemini in the following papers:
 
   1. [Gemini Paper first version](https://link.springer.com/content/pdf/10.1007%2F978-3-540-24685-5_22.pdf)
   2. [Gemini Paper second version](https://www.researchgate.net/publication/221601988_Gemini_Probabilistic_Routing_Algorithm_in_Structured_P2P_Overlay/link/53fdb64c0cf22f21c2f82a31/download)
-
+  3. [Kelips Paper](http://iptps03.cs.berkeley.edu/final-papers/kelips.pdf)
 
 ## Why Gemini?
 ----
-
  
 1) Gemini divides peers into a symmetric manner, allowing for maximum control and configuration.
 2) Gemini nodes employ items in the other dimension of groups as pointers allowing peers to have a reduced fixed scope with high "dispersed-ness", which means most of the network will be covered in that small scope. (smaller routing table).
