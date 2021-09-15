@@ -112,6 +112,10 @@ To route a message M, node N does the following:
        1.b.b If not, node N routes E to a randomly picked node from its hat case such that E's ID has a different boot case than M's destination ID.
 
 Written in pseudo-code, the Gemini routing algorithm is as follows:
+![Gemini Routing Algorithm Written In Pseudocode](https://i.ibb.co/GCBV00V/Screen-Shot-2021-09-15-at-3-45-54-AM.png)
+
+Here is a copiable version in Markdown
+
 ```
 route(M):
   destID <- M's destination ID
