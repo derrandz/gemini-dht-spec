@@ -83,7 +83,7 @@ In this section, we will start by defining the main terms used by the paper to r
 
 > To learn more about the nature and structure of the IDs used with this algorithm, please refer to [Node Identification And Security](https://github.com/pokt-network/gemelos/wiki/Node-Identification-And-Security)
 
-### 3.2 Routing Data Structure
+#### 3.2 Routing Data Structure
 
 The routing data structure is comprised of a hat club and a boot club representation of the network relative to the concerned node, and a formal way of describing it would be:
 
@@ -95,7 +95,7 @@ Meaning, the routing table of a node A is the union of its hat club and boot clu
 
 Let's start by describing the hat and boot clubs and how they make up a routing table.
 
-#### Hat Club
+##### Hat Club
 
 We define `n` as the length of IDs assigned to node, A hat club is represented as an address space (N>>2^n) such that each ID belonging to a hat club shares the same `h` bits with the concerned node's ID.
 
@@ -106,7 +106,7 @@ In a given hat club:
   * A hat club can measure the distance between a given ID and its head's ID.
   * A hat club can calculate the **numerically closest* ID(s) to its head.
 
-#### Boot Club
+##### Boot Club
 
 We define `n` as the length of IDs assigned to node, A boot club is represented as an address space (N>>2^n) such that each ID belonging to a boot club shares the same `b` bits with the concerned node's ID.
 
@@ -117,7 +117,7 @@ In a given boot club:
   * A boot club can measure the distance between a given ID and its head's ID.
   * A boot club can calculate the **numerically closest* ID to its head.
 
-### 3.3 Routing Algorithm
+#### 3.3 Routing Algorithm
 
 
 To route a given message M, we define the following properties of the message that will be useful to the routing process:
@@ -167,13 +167,13 @@ route(M):
   Route to E.
 ```
 
-### 3.4 Maintenance
+#### 3.4 Maintenance
 
 A peer cares to maintain only its reduced fixed scope of the network, that is its hat and boot clubs. To be able to maintain an updated view of the network, a Gemini peer sends periodic heartbeats to its clubs members and updates it state accordingly.
 
 To see the full details of this process, please refer to the [Maintenance](https://github.com/pokt-network/hydrate/wiki/Churn-Management#4-maintenance) Section in [Churn Management](https://github.com/pokt-network/hydrate/wiki/Churn-Management) Chapter of this wiki/spec.
 
-### 3.5 Network Parameters and Scalability
+#### 3.5 Network Parameters and Scalability
 
 So far, we've only talked about Gemini using abstract undefined parameters, specifically:
 
