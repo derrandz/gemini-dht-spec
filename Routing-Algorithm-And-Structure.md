@@ -1,6 +1,6 @@
 # This is a living page, we've very recently identified a serious optimization so this is for now not ready for consumption.
 
-## Overview
+## I. Overview
 ----
 Choosing the proper data structure to represent the structure of a network's overlay is the main and the crucial step to achieving a structured overlay, and a detrimental one for building an efficient and performant network.
 
@@ -17,27 +17,31 @@ Before we dive in this section, we want to allude to the fact that the paper its
 
 🗝: Key concept that should be paid attention to
 
-## (WIP) Problematic
+## II. The Problematic
 ----
 
-## (WIP) Proposed Solution: Constant Hop Affinity DHTs (CHAD)
-----
+During our [research](#), we have been able to identify the most suitable candidate for our routing algorithm and overlay structure, which ended up being Gemini (_more on this down below_), however, having ran a few simulations and performed a few projections, we realized that as scalable as Gemini is, we could still face some challenges before we reach a relatively significant network size (_peer count_)
 
-In short: CHAD = Kelips + Gemini
+All of a sudden, the challenge was not scaling to a billion nodes but rather accommodating for cases when the network is still at its infancy and growing, a 1000 and below.
 
-## (WIP) Why CHAD?
-----
+We first off tried to keep it as simple as possible and tried to go with an if else approach. If below a certain size, use a PRR algorithm, if beyond the threshold, fallback to Gemini.
 
-### (WIP) What is an Affinity DHT?
+However this approach would have been a hell to implement, due to the fact that past the defined threshold, you would effectively almost join a different network, with a different churn management process and different discovery logic and what have you. No one was willing to implement that.
 
-#### (WIP) Kelips
+After some thought, and after revisiting other candidates we have covered in our research, we took a special appeal to Kelips O(1) routing algorithm, but we hoped to extract the good parts only, so that we don't have to deal with the file-lookup specific stuff and what not.
 
-#### (WIP) Gemini
+We were pretty sure that Gemini was the best candidate for our network regardless of what size it is, since it is highly parameterized, however we wanted an efficient network at whatever size.
 
-#### (WIP) CHAD
+To make sure that we explain everything pretty well, this document will embody the decision making timeline, by first:
 
-## What is Gemini?
-----
+ 1. Explaining why Gemini
+ 2. What are the challenges of using Gemini before reaching a significant network
+ 3. The solution (_A hybrid appraoch_)
+
+## III. Specification
+---
+
+### 1. What is Gemini?
 
 Gemini is a structure with an algorithm aimed to support efficient and scalable structured overlays.
 Its name comes from the fact that its routing table consists of two parts, one containing nodes with common prefix and the other containing nodes with common suffix. Gemini routes messages to their destinations in just 2 hops, with a very high probability.
@@ -50,8 +54,8 @@ You can find more information about Gemini in the following papers:
   2. [Gemini Paper second version](https://www.researchgate.net/publication/221601988_Gemini_Probabilistic_Routing_Algorithm_in_Structured_P2P_Overlay/link/53fdb64c0cf22f21c2f82a31/download)
   3. [Kelips Paper](http://iptps03.cs.berkeley.edu/final-papers/kelips.pdf)
 
-## Why Gemini?
-----
+### 2. Why Gemini?
+
  
 1) Gemini divides peers into a symmetric manner, allowing for maximum control and configuration.
 2) Gemini nodes employ items in the other dimension of groups as pointers allowing peers to have a reduced fixed scope with high "dispersed-ness", which means most of the network will be covered in that small scope. (smaller routing table).
@@ -60,10 +64,10 @@ You can find more information about Gemini in the following papers:
 5) Gemini is simple, no specifically complex classification or routing logic is required, Gemini relies on natural uniformity and distribution laws that are observably always true as long as parameters are respected, which significantly reduces human-error chances.
 6) No better candidate! You can refer to the our research summary to learn more about this. // TODO: Link to Forum summarizing our research effort or add in as a separate page in the wiki
 
-## Specification
+### 3. Gemini Specification
 ----
 
-### 1. Glossary
+#### 3.1 Glossary
 
 In this section, we will start by defining the main terms used by the paper to remove any ambiguity. Those will be used heavily in this specification and we hope in any implementing code.
 
@@ -79,7 +83,7 @@ In this section, we will start by defining the main terms used by the paper to r
 
 > To learn more about the nature and structure of the IDs used with this algorithm, please refer to [Node Identification And Security](https://github.com/pokt-network/gemelos/wiki/Node-Identification-And-Security)
 
-### 2. Routing Data Structure
+### 3.2 Routing Data Structure
 
 The routing data structure is comprised of a hat club and a boot club representation of the network relative to the concerned node, and a formal way of describing it would be:
 
@@ -113,8 +117,8 @@ In a given boot club:
   * A boot club can measure the distance between a given ID and its head's ID.
   * A boot club can calculate the **numerically closest* ID to its head.
 
-### 3. Routing Algorithm
----
+### 3.3 Routing Algorithm
+
 
 To route a given message M, we define the following properties of the message that will be useful to the routing process:
 
@@ -163,15 +167,13 @@ route(M):
   Route to E.
 ```
 
-### 4. Maintenance
-----
+### 3.4 Maintenance
 
 A peer cares to maintain only its reduced fixed scope of the network, that is its hat and boot clubs. To be able to maintain an updated view of the network, a Gemini peer sends periodic heartbeats to its clubs members and updates it state accordingly.
 
 To see the full details of this process, please refer to the [Maintenance](https://github.com/pokt-network/hydrate/wiki/Churn-Management#4-maintenance) Section in [Churn Management](https://github.com/pokt-network/hydrate/wiki/Churn-Management) Chapter of this wiki/spec.
 
-### 5. Network Parameters and Scalability
-----
+### 3.5 Network Parameters and Scalability
 
 So far, we've only talked about Gemini using abstract undefined parameters, specifically:
 
@@ -261,10 +263,10 @@ Meaning: 94% of the request happened in 2 hops, whilst the rest happened in exac
 
 (_The real life simulation is available at [hydrate/examples/routing-simulation.go](https://github.com/pokt-network/hydrate/blob/main/examples/cmd/gemini/routing.go)_)
 
-### 7. Edge cases
----
+### 4. Gemini Limitations
+----
 
-#### Elastic Network
+#### 4.1 Elastic Network
 
 ##### Description
 As network size is not constant, but rather grows and shrinks, we are interested in accounting for the edge case when not as many peers in the network lead to a peers being the only peers in a their respective hat or boot clubs, making them lonely unreachable islands in terms of routing.
@@ -314,8 +316,22 @@ We can think of this as: the smaller the network, the broader the scope of the p
 
 // Todo discuss with other whether such state is readily available or rather on-demand from a seed node.
 
+### 5. (WIP) Solution: Constant Hop Affinity DHTs (CHAD)
+---
 
-## How Does Gemini Impact The Other Parts
+#### 5.1 In Transit: Using Kelips
+
+#### 5.2 Using Kelips without losing Gemini: Affinity & Pointer Groups
+
+##### 5.2.1 Affinity Groups
+##### 5.2.2 Pointer Groups
+##### 5.2.3 Formalization
+##### 5.2.4 Routing Algorithm
+##### 5.2.5 Discovery
+##### 5.2.6 Churn Management
+
+
+## IV. (WIP) How Does CHAD influence the other parts
 ----
 
 1. Club (_hat and boot_) elements are interconnected, meaning that there is a cost to maintaining that interconnected, how does this influence outbound/inbound connections count and pooling?
