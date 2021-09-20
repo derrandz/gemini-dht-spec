@@ -1,5 +1,3 @@
-# This is a living page, we've very recently identified a serious optimization so this is for now not ready for consumption.
-
 ## I. Overview
 ----
 Choosing the proper data structure to represent the structure of a network's overlay is the main and the crucial step to achieving a structured overlay, and a detrimental one for building an efficient and performant network.
@@ -45,7 +43,8 @@ To make sure that we explain everything pretty well, this document will embody t
 
 Gemini is a structure with an algorithm aimed to support efficient and scalable structured overlays.
 Its name comes from the fact that its routing table consists of two parts, one containing nodes with common prefix and the other containing nodes with common suffix. Gemini routes messages to their destinations in just 2 hops, with a very high probability.
-Although Gemini is not formally a O(1) routing algorithm, however it can be categorized as so. The same can be said about it if we want to categorize it as a logarithmic degree mesh or a PRR algorithm. 
+Although Gemini is not formally a O(1) routing algorithm, however it can be categorized as so. The same can be said about it if we want to categorize it as a logarithmic degree mesh or a PRR algorithm (_in terms of algorithm similarity, obviously the asymptotic complexity is significantly enhanced in the case of Gemini_)
+
 In our opinion, it has gotten the best of all worlds.
 
 You can find more information about Gemini in the following papers:
@@ -316,18 +315,60 @@ We can think of this as: the smaller the network, the broader the scope of the p
 
 // Todo discuss with other whether such state is readily available or rather on-demand from a seed node.
 
-### 5. (WIP) Solution: Constant Hop Affinity DHTs (CHAD)
+### 5. Solution: Double Affinity & Pointers Group
 ---
+#### 5.1 Affinity & Pointer Groups
+If we closely look at Kelips and Gemini, they are both trying to solve the same problem with almost the same approach, except that Gemini is more ingenious and dynamic due to the mere fact that it relies on uniform distribution laws.
 
-#### 5.1 In Transit: Using Kelips
+The main similarity is that the entire address space is categorized into multiple "affinity groups" and access to other affinity groups from a given particular group is guaranteed thanks to pointer groups.
 
-#### 5.2 Using Kelips without losing Gemini: Affinity & Pointer Groups
+Kelips explicitly defines and maintains the pointers groups while Gemini employs items from the second dimension, to the other affinity groups (_hats_), which requires no explicit maintenance of definition.
 
-##### 5.2.1 Affinity Groups
-##### 5.2.2 Pointer Groups
+This abstraction is super useful and reduces the problem to:
+
+If my node is in Affinity Group X:
+
+ - What is the probability of finding a random node Y in this affinity group?
+
+ - How many other affinity groups is this group connected to and what is the probability of finding node Y in those other groups?
+
+Gemini just outstandingly performs well when it comes to solving this.
+
+So when we are dealing with a disperse network with fewer peers that risk being entirely isolated and not connected either from the first dimension (_their own affinity group_) or from the second dimension (_by being pointed at from a pointer group_), all we need to do is increase the probability of finding our isolated nodes through some mechanism, thus breaking that isolation although not explicitly.
+
+##### 5.2.1 Exploiting multi-dimensionality
+
+To accommodate for a very dispersed network or a small network, we simply suggest to increase the dimensions through which we establish perspectives about the network.
+
+For every node that has an affinity group (_hat club_) and a pointers group (_boot club_) to other affinity groups, we will issue a second affinity group and a second pointers group such that, the second affinity group is a third dimension group allowing for a completely and entirely new view of the network and a unique membership set(_meaning more probabilities_) and a pointers group as a fourth dimension group that simply points to the other affinity groups at the third level.
+
+In short, this will just double the probabilities and chances of a network to route in a given request in 2 hops due to the mere fact that a node will magically now belong to two unique affinity groups, both of which have second-dimension (_relative to their dimension_) employed items as pointers.
+
+To put this in concrete terms, take a peer A from the network, peer A has:
+
+1. a hat club (_first dimension affinity group_):
+
+This relationship is possible thanks to the fact that peer A has a prefix of a length `h`, let's assume it's `00100` for the sake of the example.
+
+2. a boot club (_second dimension items group to point to first dimension affinity groups_):
+
+This relationship is possible thanks to the fact that peer B has a suffix of a lenght `b`, let's assume that it is `00000` for the sake of the example, all addresses that belong to an affinity group are pointed at naturally by the suffix they have, hence the possibility of pointers employing.
+
+3. a shadow hat club (_a third dimension affinity group_):
+
+This relationship is possible by one magical trick we play, that is to "reverse" prefixes and suffixes to achieve this. Meaning, the suffix of this peer, will now act as a prefix, and thus provide this peer a new hat club, however throuh an inverted relationship so to say.
+
+4. a shadow boot club (_a fourth dimension items to point the third affinity groups_):
+
+This relationship is possible by the same trick as mentioned in the shadow hat club, only as you can already tell, this time around, the suffix will act as a prefix. Meaning that the third dimension affinity groups are going to be pointed at by this fourth dimension group items.
+
+
 ##### 5.2.3 Formalization
+
 ##### 5.2.4 Routing Algorithm
+
 ##### 5.2.5 Discovery
+
 ##### 5.2.6 Churn Management
 
 
