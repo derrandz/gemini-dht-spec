@@ -365,13 +365,13 @@ This relationship is possible by the same trick as mentioned in the shadow hat c
 Running a [rounting simulation](#) for 100 peers in a network with h=b=3 resulted in (_100 runs_)
 
 
-| Node Count            | 100   | C     |
-| :-------------------- | :---: | ----: |
-| h                     | 3     |       |
-| b                     | 3     |       |
-| Routed in 2 hops (%)  | 66%   |       |
-| Routed in 1 hop (%)   | 28%   |       |
-| Routed in > 2 hops(%) | 3%    |       |
+| Node Count            | 100   |
+| :-------------------- | :---: |
+| h                     | 3     |
+| b                     | 3     |
+| Routed in 2 hops (%)  | 66%   |
+| Routed in 1 hop (%)   | 28%   |
+| Routed in > 2 hops(%) | 3%    | 
 
 
 ##### 5.2.3 Formalization
