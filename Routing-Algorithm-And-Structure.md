@@ -346,19 +346,19 @@ In short, this will just double the probabilities and chances of a network to ro
 
 To put this in concrete terms, take a peer A from the network, peer A has:
 
-1. a hat club (_first dimension affinity group_):
+##### 1. a hat club (_first dimension affinity group_):
 
 This relationship is possible thanks to the fact that peer A has a prefix of a length `h`, let's assume it's `00100` for the sake of the example.
 
-2. a boot club (_second dimension items group to point to first dimension affinity groups_):
+##### 2. a boot club (_second dimension items group to point to first dimension affinity groups_):
 
 This relationship is possible thanks to the fact that peer B has a suffix of a lenght `b`, let's assume that it is `00000` for the sake of the example, all addresses that belong to an affinity group are pointed at naturally by the suffix they have, hence the possibility of pointers employing.
 
-3. a shadow hat club (_a third dimension affinity group_):
+##### 3. a shadow hat club (_a third dimension affinity group_):
 
 This relationship is possible by one magical trick we play, that is to "reverse" prefixes and suffixes to achieve this. Meaning, the suffix of this peer, will now act as a prefix, and thus provide this peer a new hat club, however throuh an inverted relationship so to say.
 
-4. a shadow boot club (_a fourth dimension items to point the third affinity groups_):
+##### 4. a shadow boot club (_a fourth dimension items to point the third affinity groups_):
 
 This relationship is possible by the same trick as mentioned in the shadow hat club, only as you can already tell, this time around, the suffix will act as a prefix. Meaning that the third dimension affinity groups are going to be pointed at by this fourth dimension group items.
 
