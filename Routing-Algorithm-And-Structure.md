@@ -265,10 +265,10 @@ Meaning: 94% of the request happened in 2 hops, whilst the rest happened in exac
 ### 4. Gemini Limitations
 ----
 
-#### 4.1 Elastic Network
+#### 4.1 An Elastic Network
 
 ##### Description
-As network size is not constant, but rather grows and shrinks, we are interested in accounting for the edge case when not as many peers in the network lead to a peers being the only peers in a their respective hat or boot clubs, making them lonely unreachable islands in terms of routing.
+As network size is not a constant, but rather grows and shrinks, we are interested in accounting for the edge case when there aren't as many peers in the network, which leads to some peers being the only peers in a their respective hat or boot clubs, making them lonely unreachable islands in terms of routing.
 
 To further gain insight on such behavior, we've ran a little experiment to see at which node count do lonely islands appear and disappear. (Code available at [Hydrate/examples/distribution.go](https://github.com/pokt-network/hydrate/blob/main/examples/cmd/gemini/distribution.go))
 
@@ -301,24 +301,41 @@ The results were as follows:
 
 We can clearly state that routing failures start to disappear at 300 peers, but that does not mean we are at maximal routing efficiency. (_Some routes were happening after 100 hops_)
 
-To be able to accommodate for the phase when the network is either still growing and below 1000 (_we are setting 1000 as to when routing is near maximal efficiency_) or has shrunk down, we would like to implement a few intermediate strategies to ensure that the network (_even at the worst of partitions, say 10 nodes are the only nodes alive_) we can still perform chain capabilities flawlessly.
+To be able to accommodate for the phase when the network is either still growing and below 1000 (_we are setting 1000 as an example of when routing is picking up towards maximal efficiency_) or has shrunk down, we would like to implement a few intermediate strategies to ensure that the network (_even at the worst of partitions, say 50 nodes are the only nodes alive_) we can still perform chain capabilities flawlessly.
 
 To further give an idea about how the routing efficiency behaves in function of the network size (_for h=b=5_), we present the following graph:
 
 ![Hr in Function of Network Size](https://i.ibb.co/dm3RHys/Screen-Shot-2021-09-15-at-1-58-34-AM.png)
 
-For this, we would like to fallback to using a Kelips' O(1) logic of maintaining the whole network state in all nodes for small network sizes.
+For this, we would like to fallback to using a mechanism or logic of routing state maintenance such that the network state in all nodes is covering a maximal number of nodes.
 
 We can think of this as: the smaller the network, the broader the scope of the peer (_the larger the routing state_).
 
 ##### Formalization
 
-// Todo discuss with other whether such state is readily available or rather on-demand from a seed node.
+To restate the problem in clearer terms, we can say the following:
+* **Lemma**: Given Gemini default parameters, the smaller the network, the more hat clubs that are not covered by any other boot clubs (_pointer groups basically_), hence the isolation.
+
+To further contextualize this limitation, we would like to describe the growth of the network in terms of three phases:
+
+1. Expansion phase (_High entropy, low accuracy_)
+
+This phase is characterized primarily by the network peer count being less than **4000** peers.
+This phase is the most problematic as far as Gemini is concerned and represents the phase where the limitation at hand is susceptible to occur.
+
+2. Rapid growth phase (_Entropy near median, accuracy near optimal_)
+
+This phase is characterized primarily by the network peer count being between **4000** and **100K** peers.
+Gemini at this stage is approximation high accuracy at a rapid pace, it is safe to say per our data that past **6000** peers, setting h=b=5 will ensure at least 92% routing probability. Past *10K* will perhaps require an increase for `h` and `b` for optimal maintenance cost and hyper-accuracy rates.
+
+3. Stabilization phase (_Low entropy, Maximal accuracy_)
+
+This phase is characterized primarily by the network peer count being between **100K** and **5M** peers. This should represent the plateau phase for Gemini, in this phase, we will defacto fallback to using the recommended paper parameters. No particular hinderances should occur at this phase.
 
 ### 5. Solution: Double Affinity & Pointers Group
 ---
 #### 5.1 Affinity & Pointer Groups
-If we closely look at Kelips and Gemini, they are both trying to solve the same problem with almost the same approach, except that Gemini is more ingenious and dynamic due to the mere fact that it relies on uniform distribution laws.
+If we closely look at Kelips (_and OneHop/UnoHop and other constant hop algorithms_) and Gemini, they are both trying to solve the same problem with almost the same approach, except that Gemini is more ingenious and dynamic due to the mere fact that it relies on uniform distribution laws.
 
 The main similarity is that the entire address space is categorized into multiple "affinity groups" and access to other affinity groups from a given particular group is guaranteed thanks to pointer groups.
 
@@ -338,7 +355,7 @@ So when we are dealing with a disperse network with fewer peers that risk being 
 
 ##### 5.2.1 Exploiting multi-dimensionality
 
-To accommodate for a very dispersed network or a small network, we simply suggest to increase the dimensions through which we establish perspectives about the network.
+To accommodate for a very dispersed network or a small network, technically a network at the **expansion phase**, we simply suggest to increase the dimensions through which we establish perspectives about the network.
 
 For every node that has an affinity group (_hat club_) and a pointers group (_boot club_) to other affinity groups, we will issue a second affinity group and a second pointers group such that, the second affinity group is a third dimension group allowing for a completely and entirely new view of the network and a unique membership set(_meaning more probabilities_) and a pointers group as a fourth dimension group that simply points to the other affinity groups at the third level.
 
@@ -411,13 +428,13 @@ The Discovery Process's main goal is to first:
 
 For the seed node to determine the level, we will simply set the following condition:
 
-A. For less than 4000 peers
+A. If the network is still in an **Expansion phase**
    1. Gemini dimension will be 4 instead of default 2.
    2. h and b will `h=b=3`
-B. For more than 4000 and less than 100K peers
+B. If the network is at a **Rapid Growth phase**
    1. Gemini dimension will be back to default, 2.
    2. h and b will then use the correct estimated values per our data sheets, `h=b=5`, we might opt for `h=5 b=3` for more accuracy.
-C. For 100K to 5M peers
+C. If the network is at a **Stabilization phase**
   1. Gemini dimension will be the default, 2.
   2. h and b will use the paper parameters, `h=b=10`
 
