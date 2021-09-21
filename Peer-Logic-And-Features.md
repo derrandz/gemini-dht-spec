@@ -147,7 +147,7 @@ Every time a peer reaches a given height, it will inform the **_Chain-Aware Lead
 
 **1.3 Chain-Awareness Model**
 
-The **_Chain-Aware Leader** and **_Chain-Aware Replicas_** will maintain a simple chain-awareness structure primarily ordered by a key chain state data point, in our case, chain height.
+The **_Chain-Aware Leader_** and **_Chain-Aware Replicas_** will maintain a simple chain-awareness structure primarily ordered by a key chain state data point, in our case, chain height.
 
 We would like to keep the data structure choice undecided as to keep innovation space for incoming implementations, however we would like to constraint such structure with the following requirements:
 
