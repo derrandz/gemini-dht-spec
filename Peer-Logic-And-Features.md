@@ -114,6 +114,50 @@ Passaround(M):
 ---
 
 #### 1. Chain Aware Network
+
+##### Description
+In order to achieve network awareness (_learning more about the peers' states and organizing them according to it_), we opt to go with a leader-based approach to optimize in terms of bandwidth and complexity, as learning about neighboring node's states and propagating such information will be costly, and at all cases will be cheaper if taken care of by a singular node per group.
+
+
+##### Formalization
+
+**1. Chain Awareness**
+ 
+Primarily, we are interested in other peers current heights, so that we facilitate processes such as blockchain syncing. For that, we will primarily implement:
+
+A. A leader-based approach
+B. A push-based communication model
+
+**1.1 Chain-Aware Leader**
+
+A Chain-aware leader of a group is basically the successor of the media point of a group. This leader is elected simply by convention and relies on the fact that all peers in a group are interconnected and have up-to-date routing states.
+
+This leader is easily elected (_or rather is beforehand known by convention_) due to the cheer dumb luck of being the numerical center of its group (_address space interval_)
+
+The three nodes to follow the leader, which we will denote **Chain-ware replicas** will gradually replicate the awareness state of the leader to ensure quick leaders replacement in case of outages.
+
+The Chain-aware leader will act as a central entity for its group and provide requesting nodes with destination address for any height they request or would like to sync from.
+
+**1.2 Push-based awareness-state communication**
+
+Every time a peer reaches a given height, it will inform the **_Chain-Aware Leader_** of its group and the **_Chain-Aware Replicas** as well. This approach is very straightforward and requires very little overhead in terms of management.
+
+**_Chain Aware Leaders_** ensure that they are all up to date by forwarding [**_Chain-Awareness Sync Request_**](https://github.com/pokt-network/hydrate/wiki/Messages-In-The-Overlay) to other leaders in other groups using the **Targeted Passaround** communication model.
+
+**1.3 Chain-Awareness Model**
+
+The **_Chain-Aware Leader** and **_Chain-Aware Replicas_** will maintain a simple chain-awareness structure primarily ordered by a key chain state data point, in our case, chain height.
+
+We would like to keep the data structure choice undecided as to keep innovation space for incoming implementations, however we would like to constraint such structure with the following requirements:
+
+1. Read time should be constant: _O(1)_
+2. Write time should be at worst logarithmic: _O(log(N)_
+3. Entries should be ordered by a key chain state data point. (_aka height or other_)
+
+This structure will be heavily read from by group peers that would like to learn about what peers to sync from.
+
+The write on the other hand, or Chain-Awareness sync will be periodic and is accepting of a relatively _"worse"_ complexity.
+
 #### 2. Geography Aware Network
 #### 3. Reputation Aware Network (Blacklisting and stuff)
 
