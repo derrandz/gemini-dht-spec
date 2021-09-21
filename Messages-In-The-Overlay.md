@@ -17,7 +17,9 @@ Some of them are direct communication, intelligent gossip like messaging, and lo
 1. Peer Message
 2. Direct Message
 3. Passaround Message
-4. Network Event Message
+4. Targeted-Passaround
+5. Chain-awareness Sync Request
+6. Network Event Message
 
 #### 1. Direct Message
 A general-purpose message with a specific destination. Basic private data exchange between peers. Usually delivered by Establishing a connection between peers.
