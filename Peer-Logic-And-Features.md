@@ -165,7 +165,27 @@ The write on the other hand, or Chain-Awareness sync will be periodic and is acc
 ### Acting Models (_Specialized Peers/Peer Roles_)
 ---
 
-#### 1. Seed Nodes
+#### Description
+
+#### 1. (WIP) Seed Nodes
+
+##### Description
+
+The Seed role is a primary network role and has as a direct responsibility:
+
+1. Keeping tracking of joining peers
+1.a Keep track of their count
+1.b Keep track of their addresses
+1.c Keep periodically track of their aliveness but on a low frequency.
+
+2. Provide joining peers with routing state bootstrap parameters
+2.a Provide the [_Gemini dimension_](https://github.com/pokt-network/hydrate/wiki/Routing-Algorithm-And-Structure#521-exploiting-multi-dimensionality) in function of the network phase.
+2.b Provide the [_Gemini Parameters_](https://github.com/pokt-network/hydrate/wiki/Routing-Algorithm-And-Structure#31-glossary) in function of the network phase
+2.c After having decided on the parameters, provide the joining peer with at least on member per routing state dimension to ensure the continutation of the joining process (_member list exchange and membership_)
+
+3. Trigger network phase change event when all conditions are met and coordinate peers routing state update in function of the phase.
+// To be continued
+
 #### 2. Validator Nodes
 #### 3. Full nodes
 #### 4. N/A
