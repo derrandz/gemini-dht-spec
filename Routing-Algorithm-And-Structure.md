@@ -371,16 +371,35 @@ Running a [rounting simulation](#) for 100 peers in a network with h=b=3 resulte
 | b                     | 3     |
 | Routed in 2 hops (%)  | 66%   |
 | Routed in 1 hop (%)   | 28%   |
-| Routed in > 2 hops(%) | 3%    | 
+| Routed in > 2 hops(%) | 3%    |
 
 
 ##### 5.2.3 Formalization
 
-##### 5.2.4 Routing Algorithm
+To formalize this solution, it would be useful to first vulgarize how will the algorithm, the discovery process and the churn management process change then describe them in a formal way.
 
-##### 5.2.5 Discovery
+##### 5.2.3.a Routing Algorithm
 
-##### 5.2.6 Churn Management
+In the default settings Gemini, the routing task can be reduced to the simple statement:
+
+> If the destination peer is in the same affinity group as the routing peer, then done, otherwise, route me to another affinity group.
+
+The rest is just probability, and when fine-tuned and well-parameterized, we approximate a 99% chance of finding our destination node in just two hops, meaning the immediate next affinity group. So many actually get responded to within 1 hop.
+
+The fourth dimension approach is no different, except that the previous statement will gain a second dimension to it, so it becomes:
+
+> If the destination peer is in the same first-order affinity group as the routing peer, then done, otherwise, check if it is in the second-order affinity group, if yes then done, otherwise, route to another affinity group that is in the same dimension as the first order one, if none, try with other affinity groups that are in the same dimension as the second order one.
+
+The solution in short is just an extension to the collision space possible between a given address picked from a set E and an already defined sub address space partial of the set E with a 99% probability of collision/intersection.
+
+The algorithm then becomes as follows:
+
+![Four-dimensional Gemini](https://i.ibb.co/J5yg0xm/Screen-Shot-2021-09-21-at-4-41-48-AM.png)
+
+
+##### 5.2.3.b Discovery
+
+##### 5.2.3.c Churn Management
 
 
 ## IV. (WIP) How Does CHAD influence the other parts
