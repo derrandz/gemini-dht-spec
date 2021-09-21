@@ -399,10 +399,42 @@ The algorithm then becomes as follows:
 
 ##### 5.2.3.b Discovery
 
+The Discovery Process's main goal is to first:
+
+1. Decide on the Gemini dimension in which the network will operate
+
+   Meaning, the seed node will determine whether peers will have a routing table consisting of just two symmetrical parts one representing the first-order affinity group (_aka hat club_) and the second-dimension pointers to the first-order affinity-groups (_aka boot clubs_) or four, the two just aforementioned + a second-order affinity group and its second dimension pointers group.
+
+2. Provide joining peers with members or members lists representing each Gemini dimension respective to the peer.
+
+  Meaning, the seed node will exchange with the joining peer at least one member for each dimension of his routing table, for the joining peer to ask that member for the members list respective to their group.
+
+For the seed node to determine the level, we will simply set the following condition:
+
+A. For less than 4000 peers
+   1. Gemini dimension will be 4 instead of default 2.
+   2. h and b will `h=b=3`
+B. For more than 4000 and less than 100K peers
+   1. Gemini dimension will be back to default, 2.
+   2. h and b will then use the correct estimated values per our data sheets, `h=b=5`, we might opt for `h=5 b=3` for more accuracy.
+C. For 100K to 5M peers
+  1. Gemini dimension will be the default, 2.
+  2. h and b will use the paper parameters, `h=b=10`
+
+More on how the seed node is able to determine such information and trigger a change event in [Peer Logic and Features / Network Roles / Seed Node](https://github.com/pokt-network/hydrate/wiki/Peer-Logic-And-Features#1-seed-nodes)
+
 ##### 5.2.3.c Churn Management
 
+As stated in the [Churn Management](https://github.com/pokt-network/hydrate/wiki/Peer-Logic-And-Features#1-seed-nodes) chapter, the default Gemini behavior is to reduce the management hassle to the specific scope of the node's affinity group and pointers group, aka hat and boot club.
 
-## IV. (WIP) How Does CHAD influence the other parts
+Nothing much will change except that in expansion phase of the network, a peer will maintain two extra clubs, which will double the maintenance cost in terms of bandwidth and messages received per second by the node, but it won't be much regardless.
+
+If you've visited the elaborations we've done in the churn management chapter, the new values will be just double the previous ones, meaning:
+
+* 12 messages per second per node
+* 6kbps will be consumed by the maintenance process
+
+## IV. How Does Gemini influence the other parts
 ----
 
 1. Club (_hat and boot_) elements are interconnected, meaning that there is a cost to maintaining that interconnected, how does this influence outbound/inbound connections count and pooling?
