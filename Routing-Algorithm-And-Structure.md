@@ -63,6 +63,11 @@ You can find more information about Gemini in the following papers:
 5) Gemini is simple, no specifically complex classification or routing logic is required, Gemini relies on natural uniformity and distribution laws that are observably always true as long as parameters are respected, which significantly reduces human-error chances.
 6) No better candidate! You can refer to the our research summary to learn more about this. // TODO: Link to Forum summarizing our research effort or add in as a separate page in the wiki
 
+
+### How does Gemini work in short?
+
+// TBD 
+
 ### 3. Gemini Specification
 ----
 
