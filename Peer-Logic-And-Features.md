@@ -50,7 +50,7 @@ The direct communication model is specified as follows:
 5. Direct communication will have a separate channel(s) and will not be bound to maximum connections and connection pooling constraints. (_refer to the [Transport Protocol & Security Section](https://github.com/pokt-network/gemelos/wiki/Transport-Logic-And-Security) for more information_)
 6. Direct communication messages will specify the `Direct` communication type in the messages header. (_Check [Messages In The Overlay](https://github.com/pokt-network/gemelos/wiki/Messages-In-The-Overlay) section for more information_)
 
-#### 2. Passaround Communication / Progressive Multicast
+#### 2. (WIP: will need to incorporate network phase) Passaround Communication / Progressive Multicast
 
 ##### Description
 
@@ -109,6 +109,7 @@ Passaround(M):
   
 ```
 
+#### 3. (WIP) Targeted Passaround Communication / Targeted Crawling Multicast
 
 ### Awareness models (_Specialized states_)
 ---
