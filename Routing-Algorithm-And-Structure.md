@@ -425,7 +425,7 @@ More on how the seed node is able to determine such information and trigger a ch
 
 ##### 5.2.3.c Churn Management
 
-As stated in the [Churn Management](https://github.com/pokt-network/hydrate/wiki/Peer-Logic-And-Features#1-seed-nodes) chapter, the default Gemini behavior is to reduce the management hassle to the specific scope of the node's affinity group and pointers group, aka hat and boot club.
+As stated in the [Churn Management](https://github.com/pokt-network/hydrate/wiki/Churn-Management) chapter, the default Gemini behavior is to reduce the management hassle to the specific scope of the node's affinity group and pointers group, aka hat and boot club.
 
 Nothing much will change except that in expansion phase of the network, a peer will maintain two extra clubs, which will double the maintenance cost in terms of bandwidth and messages received per second by the node, but it won't be much regardless.
 
