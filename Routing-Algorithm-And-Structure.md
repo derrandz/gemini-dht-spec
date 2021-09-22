@@ -64,14 +64,10 @@ You can find more information about Gemini in the following papers:
 6) No better candidate! You can refer to the our research summary to learn more about this. // TODO: Link to Forum summarizing our research effort or add in as a separate page in the wiki
 
 
-### 3. How does Gemini work in short?
-
-// TBD 
-
-### 4. Gemini Specification
+### 3. Gemini Specification
 ----
 
-#### 4.1 Glossary
+#### 3.1 Glossary
 
 In this section, we will start by defining the main terms used by the paper to remove any ambiguity. Those will be used heavily in this specification and we hope in any implementing code.
 
@@ -87,7 +83,7 @@ In this section, we will start by defining the main terms used by the paper to r
 
 > To learn more about the nature and structure of the IDs used with this algorithm, please refer to [Node Identification And Security](https://github.com/pokt-network/gemelos/wiki/Node-Identification-And-Security)
 
-#### 4.2 Routing Data Structure
+#### 3.2 Routing Data Structure
 
 The routing data structure is comprised of a hat club and a boot club representation of the network relative to the concerned node, and a formal way of describing it would be:
 
@@ -121,7 +117,7 @@ In a given boot club:
   * A boot club can measure the distance between a given ID and its head's ID.
   * A boot club can calculate the **numerically closest* ID to its head.
 
-#### 4.3 Routing Algorithm
+#### 3.3 Routing Algorithm
 
 
 To route a given message M, we define the following properties of the message that will be useful to the routing process:
@@ -177,7 +173,7 @@ A peer cares to maintain only its reduced fixed scope of the network, that is it
 
 To see the full details of this process, please refer to the [Maintenance](https://github.com/pokt-network/hydrate/wiki/Churn-Management#4-maintenance) Section in [Churn Management](https://github.com/pokt-network/hydrate/wiki/Churn-Management) Chapter of this wiki/spec.
 
-#### 4.5 Network Parameters and Scalability
+#### 3.5 Network Parameters and Scalability
 
 So far, we've only talked about Gemini using abstract undefined parameters, specifically:
 
@@ -267,10 +263,10 @@ Meaning: 94% of the request happened in 2 hops, whilst the rest happened in exac
 
 (_The real life simulation is available at [hydrate/examples/routing-simulation.go](https://github.com/pokt-network/hydrate/blob/main/examples/cmd/gemini/routing.go)_)
 
-### 5. Gemini Limitations
+### 4. Gemini Limitations
 ----
 
-#### 5.1 An Elastic Network
+#### 4.1 An Elastic Network
 
 ##### Description
 As network size is not a constant, but rather grows and shrinks, we are interested in accounting for the edge case when there aren't as many peers in the network, which leads to some peers being the only peers in a their respective hat or boot clubs, making them lonely unreachable islands in terms of routing.
@@ -337,9 +333,9 @@ Gemini at this stage is approximation high accuracy at a rapid pace, it is safe 
 
 This phase is characterized primarily by the network peer count being between **100K** and **5M** peers. This should represent the plateau phase for Gemini, in this phase, we will defacto fallback to using the recommended paper parameters. No particular hinderances should occur at this phase.
 
-### 6. Solution: Double Affinity & Pointers Group
+### 5. Solution: Double Affinity & Pointers Group
 ---
-#### 6.1 Affinity & Pointer Groups
+#### 5.1 Affinity & Pointer Groups
 If we closely look at Kelips (_and OneHop/UnoHop and other constant hop algorithms_) and Gemini, they are both trying to solve the same problem with almost the same approach, except that Gemini is more ingenious and dynamic due to the mere fact that it relies on uniform distribution laws.
 
 The main similarity is that the entire address space is categorized into multiple "affinity groups" and access to other affinity groups from a given particular group is guaranteed thanks to pointer groups.
@@ -358,7 +354,7 @@ Gemini just outstandingly performs well when it comes to solving this.
 
 So when we are dealing with a disperse network with fewer peers that risk being entirely isolated and not connected either from the first dimension (_their own affinity group_) or from the second dimension (_by being pointed at from a pointer group_), all we need to do is increase the probability of finding our isolated nodes through some mechanism, thus breaking that isolation although not explicitly.
 
-##### 6.2.1 Exploiting multi-dimensionality
+##### 5.2.1 Exploiting multi-dimensionality
 
 To accommodate for a very dispersed network or a small network, technically a network at the **expansion phase**, we simply suggest to increase the dimensions through which we establish perspectives about the network.
 
@@ -396,11 +392,11 @@ Running a [rounting simulation](#) for 100 peers in a network with h=b=3 resulte
 | Routed in > 2 hops(%) | 3%    |
 
 
-##### 6.2.3 Formalization
+##### 5.2.3 Formalization
 
 To formalize this solution, it would be useful to first vulgarize how will the algorithm, the discovery process and the churn management process change then describe them in a formal way.
 
-##### 6.2.3.a Routing Algorithm
+##### 5.2.3.a Routing Algorithm
 
 In the default settings Gemini, the routing task can be reduced to the simple statement:
 
@@ -419,7 +415,7 @@ The algorithm then becomes as follows:
 ![Four-dimensional Gemini](https://i.ibb.co/J5yg0xm/Screen-Shot-2021-09-21-at-4-41-48-AM.png)
 
 
-##### 6.2.3.b Discovery
+##### 5.2.3.b Discovery
 
 The Discovery Process's main goal is to first:
 
@@ -445,7 +441,7 @@ C. If the network is at a **Stabilization phase**
 
 More on how the seed node is able to determine such information and trigger a change event in [Peer Logic and Features / Network Roles / Seed Node](https://github.com/pokt-network/hydrate/wiki/Peer-Logic-And-Features#1-seed-nodes)
 
-##### 6.2.3.c Churn Management
+##### 5.2.3.c Churn Management
 
 As stated in the [Churn Management](https://github.com/pokt-network/hydrate/wiki/Churn-Management) chapter, the default Gemini behavior is to reduce the management hassle to the specific scope of the node's affinity group and pointers group, aka hat and boot club.
 
