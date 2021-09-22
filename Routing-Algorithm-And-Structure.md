@@ -167,7 +167,7 @@ route(M):
   Route to E.
 ```
 
-#### 4.4 Maintenance
+#### 3.4 Maintenance
 
 A peer cares to maintain only its reduced fixed scope of the network, that is its hat and boot clubs. To be able to maintain an updated view of the network, a Gemini peer sends periodic heartbeats to its clubs members and updates it state accordingly.
 
