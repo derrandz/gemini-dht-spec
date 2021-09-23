@@ -69,7 +69,6 @@ This model is similar to the direct communication model since the peer who initi
 
 A visual illustration of this sequential process is present here and is as follow:
 
-![Passaround as is](https://i.ibb.co/kQJ7yT9/Trickel-Around.png)
 ![Passaround as is](https://i.ibb.co/5L12rFP/passaround-1.png)
 
 If we are to aggregate all peers and their rings in one network ring, it would be very similar to chord and as follows:
