@@ -59,7 +59,7 @@ The direct communication model is specified as follows:
 
 [a]: Better ways of establishing direct communication from a singular nucleus towards a multitude of edges are also feasible, such as broadcast and multicast, however, for security and performance purposes, we will not cover this in this specification. In case there is a serious interest in exploring such avenues, a broadcast model could be possible if some underlying implementation allows it over the internet, say sockets for instance or some special router nodes to act as channels for such broadcast.
 
-#### 2. (WIP: will need to incorporate network phase) Passaround Communication / Progressive Multicast
+#### 2. Passaround Communication / Progressive Multicast
 
 ##### Description
 
