@@ -186,6 +186,7 @@ In order to achieve network awareness (_learning more about the peers' states an
 Primarily, we are interested in other peers current heights, so that we facilitate processes such as blockchain syncing. For that, we will primarily implement:
 
 A. A leader-based approach
+
 B. A push-based communication model
 
 **1.1 Chain-Aware Leader**
