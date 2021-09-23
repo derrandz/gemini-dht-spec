@@ -92,17 +92,29 @@ To achieve this, peer Y initiates a **Passing Round**, in which case it becomes 
 A peer Y initiates a passing round as follows:
 
 1. Peer Y sends a [**Passaround Message**]() to its immediate successor in its affinity group(s)
-1.a. Peer Y must receive an acknowledgment of receipt from its successor.
-1.b. In case the successor fails to acknowledge receipt within a **retry** window, peer Y marks this peer as a **skipped** peer in the message's header and passes it to successor of the failed peer.
-1.c. When a peer receives a [**Passaround Message**](), it acknowledges the receipt of the message and passes the message to its successor in the same fashion.
-1.d. A **Passing Round** will go on **MaxLaps** times before the **Head** peer receives it **MaxLaps+1** times and stops passing it around and closes this round.
-1.e In case the peer that fails to acknowledge the receipt happens to be the same peer as the **Head** that initiated this **Passing Round**, the peer in action will try to send the same **Passaround Message** to the successor of the failing head, but mark this successor as the _new_ **Head** to ensure that the **Passing Round**.
+
+     1.1. Peer Y must receive an acknowledgment of receipt from its successor.
+
+     1.b. In case the successor fails to acknowledge receipt within a **retry** window, peer Y marks this peer as a **skipped** peer in the message's header and passes it to successor of the failed peer.
+
+     1.c. When a peer receives a [**Passaround Message**](), it acknowledges the receipt of the message and passes the message to its successor in the same fashion.
+
+     1.d. A **Passing Round** will go on **MaxLaps** times before the **Head** peer receives it **MaxLaps+1** times and stops passing it around and closes this round.
+
+     1.e In case the peer that fails to acknowledge the receipt happens to be the same peer as the **Head** that initiated this **Passing Round**, the peer in action will try to send the same **Passaround Message** to the successor of the failing head, but mark this successor as the _new_ **Head** to ensure that the **Passing Round**.
+
 2. Peer Y sends a [**Delegated Passaround Message**]() to all peers in its pointer group(s) that have a different affinity group(s) (_within the same dimension_) [a], marking each peer as the **Next Head**.
-2.a. If a peer in the pointer group(s) fails to acknowledge receipt of the [**Delegated Passaround Message**](), peer Y will try to send the same message to a different peer that has the same affinity group as the failed one. If none found, that peer is simply skipped in that **Delegation round**.
-2.b. A peer receiving a **Delegated Passaround Message** will simply gain on the role of the **Head** and initiate a **Passing Round** in its own affinity group(s) and **delegate** that round to others in the same fashion.
-2.c. In case Peer Y fails to **delegate** a **Passaround Message** through its pointer group(s), peer Y will try to delegate this message through its own affinity group(s) by hand-picking peers that have different pointer groups and sending a [**Forwarded Delegated Passaround Message**]
-2.d. A peer receiving a **Forwarded Delegated Passaround Message** will not initiate a **Passing Around** in its affinity group(s), but will try to initiate a **Delegation Round** to other affinity groups through its pointers group(s), in case it fails, it will try to initiate a **_Delegation Forwarding Round_** as previously explained.
+
+   2.a. If a peer in the pointer group(s) fails to acknowledge receipt of the [**Delegated Passaround Message**](), peer Y will try to send the same message to a different peer that has the same affinity group as the failed one. If none found, that peer is simply skipped in that **Delegation round**.
+
+   2.b. A peer receiving a **Delegated Passaround Message** will simply gain on the role of the **Head** and initiate a **Passing Round** in its own affinity group(s) and **delegate** that round to others in the same fashion.
+
+   2.c. In case Peer Y fails to **delegate** a **Passaround Message** through its pointer group(s), peer Y will try to delegate this message through its own affinity group(s) by hand-picking peers that have different pointer groups and sending a [**Forwarded Delegated Passaround Message**]
+
+   2.d. A peer receiving a **Forwarded Delegated Passaround Message** will not initiate a **Passing Around** in its affinity group(s), but will try to initiate a **Delegation Round** to other affinity groups through its pointers group(s), in case it fails, it will try to initiate a **_Delegation Forwarding Round_** as previously explained.
+
 3. If a peer receiving a **Passaround Message** or **Delegated Passaround Message** or **Forwarded Delegated Passaround message** has seen this message **MaxSeenTimes**, it will not pass it around nor delegate it.
+
 4. Peers should configure the maximum amount they want receive the same message (**MaxSeenTimes**) to be larger than the maximum laps a message can do within an affinity group **MaxLaps**
 
 
