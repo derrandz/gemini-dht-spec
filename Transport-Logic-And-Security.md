@@ -37,7 +37,7 @@ Transport logic and security are key elements on the inner working of the p2p ne
 TCP/IP with a handshake for direct communications
 UDP for gossip-like / group or network-wide communication
 
-### 3. Multiplexing
+### 4. Multiplexing
 Multiplexing can be used by an implementation to take advantage of already existing connections and send different messages through the same channel. 
 
 ## Security
