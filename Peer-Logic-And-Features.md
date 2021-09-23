@@ -152,7 +152,23 @@ This algorithm should is given as an example for a gemini dimension equals `gd=1
 
 To extend it to `gd=n`, simply Pass, Delegate and Forward Delegation in each dimension's Affinity group, and increase **MaxSeenTimes** and **MaxLaps** to account for the number of dimensions. (_Multiplying those parameteres by the dimensions number `gd` is recommended_)
 
-#### 3. (WIP) Targeted Passaround Communication / Targeted Crawling Multicast
+#### 3. Targeted Passaround Communication / Targeted Crawling Multicast
+
+This model is almost no different than the **Passaround** model, except that the **Passing Round**'s length is significantly smaller.
+
+Since we are interested in passing to specific targets, the **Passing Round** will be restricted to the peers described by the targeting rules.
+
+We will call this type of round **Targeted Passing Round**.
+
+A peer Y initiates such a round as follows:
+
+1. Peer Y send a **Targeted Passaround Message** to the nodes within its affinity group(s) falling under the **TargetCriteria** in the message.
+2. Peer Y **_delegates_** and **_forwards delegations_** of the **Targeted Passaround Messages** in the same way a **Passaround Message** is delegated/forward-delegated.
+2. **TargetCriteria** specifies **Operation** and **TargetSet**.
+3. **TargetCriteria** can describe either:
+2.a. A singular exact peer by address, by specifying **Equality** as the **Operation** and the **TargetSet** as that exact peer's address.
+2.b. A multitude of addresses described by a range of addresses, by specifying **InRange** as the **Operation** and the **TargetSet** as the range's lower bound address and the upper bound's address.
+2.c. A multitude of addresses described by a step, by specifying **Step** as the **Operation** and the **TargetSet** as the numerical step length relatively to the sending peer. (_i.e: peer + N, or a logarithmic step as in Chord_) 
 
 ### Awareness models (_Specialized states_)
 ---
@@ -182,11 +198,22 @@ The three nodes to follow the leader, which we will denote **Chain-ware replicas
 
 The Chain-aware leader will act as a central entity for its group and provide requesting nodes with destination address for any height they request or would like to sync from.
 
+The Chain-aware leader indexes peer addresses by the height they are at. To avoid indexing the entire network, the Chain-aware leader indexes its entire group per heights, and keeps an index of other groups however with only 3 addresses per height.
+
+The Chain-aware leader keeps this index up to date by:
+
+1. Relying on peers in its affinity group to push to their heights.
+2. Relying on other Chain-aware leaders from other groups to exchange their groups indexes.
+
+_Read the next chapter for information_
+
+A Chain-aware leader will only keep a certain range of heights in its awareness-index.
+
 **1.2 Push-based awareness-state communication**
 
 Every time a peer reaches a given height, it will inform the **_Chain-Aware Leader_** of its group and the **_Chain-Aware Replicas** as well. This approach is very straightforward and requires very little overhead in terms of management.
 
-**_Chain Aware Leaders_** ensure that they are all up to date by forwarding [**_Chain-Awareness Sync Request_**](https://github.com/pokt-network/hydrate/wiki/Messages-In-The-Overlay) to other leaders in other groups using the **Targeted Passaround** communication model.
+**_Chain Aware Leaders_** ensure that they are all up to date by forwarding [**_Chain-Awareness Sync Request_**](https://github.com/pokt-network/hydrate/wiki/Messages-In-The-Overlay) to other leaders in other groups using the **Targeted Passaround** communication model, which every leader considers by keeping only the updated heights received in this request.
 
 **1.3 Chain-Awareness Model**
 
@@ -202,8 +229,11 @@ This structure will be heavily read from by group peers that would like to learn
 
 The write on the other hand, or Chain-Awareness sync will be periodic and is accepting of a relatively _"worse"_ complexity.
 
-#### 2. Geography Aware Network
-#### 3. Reputation Aware Network (Blacklisting and stuff)
+#### 2. Reputation Aware Network (Blacklisted/Banned peers)
+// TBD
+
+#### 3. Geography Aware Network
+// TBD
 
 ### Acting Models (_Specialized Peers/Peer Roles_)
 ---
@@ -237,4 +267,6 @@ The Seed role is a primary network role and has as a direct responsibility:
 ---
 
 #### 1. Proposing
+// Express a full scenario of how the direct communication model will be used.
 #### 2. Syncing
+// Express a full scenario of how a peer will talk to its affinity group(s) chain-aware leader and request sync information for specific heights and what happens the chain-aware leader is unable to do so. (_We will technically fallback on a passaround message to ask everybody for that specific height, and everyone with that height will use Targeted Passaround to send their address to the requesting node for a direct sync to start_)
