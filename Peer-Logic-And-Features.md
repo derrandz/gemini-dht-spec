@@ -1,23 +1,30 @@
-## Overview
+### Overview
 ----
 
 In this section, we illustrate the smarter part of the network, the part that leverages the overlay functionalities to serve the other modules and ultimately the chain.
 
 In specific terms, this section deals with communication models (_or specialized communication scenarios_) and the awareness models the network can make use of (_aware as in aware of the state it needs to perform this specialized communication_) and subsequently the architectural decisions they might engender.
 
-## What is Peer Logic
+### What is Peer Logic
+---
+Peer Logic is a everything peer specific in the context of an application that is a decentralized peer to peer one. Meaning, whatever behavior is expected to be performed from the perspective of a single peer in relation to others, specifically:
+
+1. Communication models and protocols
+2. Stateful peers/neighbors selection, ranking and ordering
+3. Peer roles
+
+### Specification
 ---
 
+First, we need to discuss a few things a **_peer needs to do in the network_**.
 
-
-## Specification
----
-
-First, we need to discuss a few things a **_peer needs to do in the network_**. We are interested in the two main state-touching scenarios:
+We are interested in the two main state-touching scenarios:
 
 1. Proposing
 
-It has become apparent to us early on that the consensus layer establishes a communication requirement to meet its security requirements, namely requiring the proposer to directly communicate with the concerned validators. Thus, it is incumbent on the peer-to-peer layer as a module to offer such functionality while _**also factoring it into the sum of all parts**_.
+It has become apparent to us early on that the other layers (_like consensus for instance_) might have specific communication requirements --_either for security or performance purposes_, 
+
+For instance, in Consensus, the proposer is required to directly communicate with the validators. Thus, it is incumbent on the peer-to-peer layer as a module to offer such functionality while _**also factoring it into the sum of all parts**_.
 
 2. Syncing
 
@@ -44,11 +51,13 @@ At this point, we envisage that this feature will be primarily used by the propo
 The direct communication model is specified as follows:
 
 1. The nucleus peer expects to have its edge peers addresses in a list, either produced from its routing table or retrieved from the chain or some other party*.
-2. The edge peers are not required to be in the routing table of the nucleus peer. 
-3. The nucleus peer sequentially and linearly communicates with the nodes in the provided edge peers addresses list
+2. The edge peers are not required to be direct neighbors of the peer (_i.e: in the routing table of the nucleus peer_). 
+3. The nucleus peer sequentially and linearly communicates with the nodes in the provided edge peers addresses list [a]
 4. Order is irrelevant in this equation
 5. Direct communication will have a separate channel(s) and will not be bound to maximum connections and connection pooling constraints. (_refer to the [Transport Protocol & Security Section](https://github.com/pokt-network/gemelos/wiki/Transport-Logic-And-Security) for more information_)
 6. Direct communication messages will specify the `Direct` communication type in the messages header. (_Check [Messages In The Overlay](https://github.com/pokt-network/gemelos/wiki/Messages-In-The-Overlay) section for more information_)
+
+[a]: Better ways of establishing direct communication from a singular nucleus towards a multitude of edges are also feasible, such as broadcast and multicast, however, for security and performance purposes, we will not cover this in this specification. In case there is a serious interest in exploring such avenues, a broadcast model could be possible if some underlying implementation allows it over the internet, say sockets for instance or some special router nodes to act as channels for such broadcast.
 
 #### 2. (WIP: will need to incorporate network phase) Passaround Communication / Progressive Multicast
 
@@ -56,9 +65,7 @@ The direct communication model is specified as follows:
 
 A Passaround Communication model is a progressive multicast happening and propagating from peer to peer until the entire network is covered.
 
-This model is similar to the direct communication model since the peer who initiates the trickling (_which shall be referred to from now on as the **head** peer_) requires to receive a final acknowledge of the delivery of the message to all the other peers, but is different in the fact that it only tells a next node about this whole trickling around.
-
-The concept is nothing new apart from the fact that we picked for it an expressive (_and rather unambiguous_) name, and is already present in (_for example_) Chord.
+This model is similar to the direct communication model since the peer who initiates the "passing" (_which shall be referred to from now on as the **head** peer_) requires to receive a final acknowledgement of the delivery of the message to all the other peers in its immediate affinity group (_routing state_), but is different in the fact that it only communicates with one next node.
 
 A visual illustration of this sequential process is present here and is as follow:
 
@@ -68,46 +75,82 @@ If we are to aggregate all peers and their rings in one network ring, it would b
 
 ![Passaround Communication as in Chord](https://www.researchgate.net/profile/Mario-Kolberg/publication/262398264/figure/fig1/AS:669953283862535@1536740718640/An-example-Chord-network-showing-the-choice-of-finger-nodes-for-Node-N8_Q320.jpg)
 
-Except that the jump will not be logarithmic but sequential and also semi-random.
+Except that the jump will not be logarithmic but sequential (_in a given affinity group_) and also semi-random (_in hour other affinity groups are accessed from a given affinity group_).
 
-(_Refer to [Routing Structure And Algorithm](https://github.com/pokt-network/gemelos/wiki/Routing-Structure-And-Algorithm) section to learn more about the ring structure and how can this trickling be achieved_)
+(_Refer to [Routing Structure And Algorithm](https://github.com/pokt-network/gemelos/wiki/Routing-Structure-And-Algorithm) section to learn more about the ring structure and how can this communication model be achieved_)
 
 ##### Formalization
 
 The Passaround Communication model can be specified as follows:
 
-1. The `Head` peer sends a Passaround Message to the next three "random" nodes in its hat club.
-2. The `Head` peer records its hat club in the Passaround Message and sends it to a random node with a different hat club in its boot club as the next `Head` (_by updating the `Head` value to match this random node's address_). 
-3. Each node receiving a Passaround Message will first verify if it received it before, and then proceed to sending it to the next three peers in its hat club.
-4. If a node has received a message `maxPasses` times, it does not forward it.
-5. The first node in a new hat club to receive a Passaround Message with a `NextHead` equals to its address is then the `Head` peer of that hat club.
-6. That next head goes on to repeat the logic of the `Head` of a club and Passes ARound that given message.
+A peer in the [Gemini](#) is organized and ordered in within a number of affinity groups and a number of pointer groups.
+
+A peer Y is concerned with passing around a message to its affinity group and delegating this task to other affinity groups so that the entire network receives this message.
+
+To achieve this, peer Y initiates a **Passing Round**, in which case it becomes a **Head**. 
+
+A peer Y initiates a passing round as follows:
+
+1. Peer Y sends a [**Passaround Message**]() to its immediate successor in its affinity group(s)
+1.a. Peer Y must receive an acknowledgment of receipt from its successor.
+1.b. In case the successor fails to acknowledge receipt within a **retry** window, peer Y marks this peer as a **skipped** peer in the message's header and passes it to successor of the failed peer.
+1.c. When a peer receives a [**Passaround Message**](), it acknowledges the receipt of the message and passes the message to its successor in the same fashion.
+1.d. A **Passing Round** will go on **MaxLaps** times before the **Head** peer receives it **MaxLaps+1** times and stops passing it around and closes this round.
+1.e In case the peer that fails to acknowledge the receipt happens to be the same peer as the **Head** that initiated this **Passing Round**, the peer in action will try to send the same **Passaround Message** to the successor of the failing head, but mark this successor as the _new_ **Head** to ensure that the **Passing Round**.
+2. Peer Y sends a [**Delegated Passaround Message**]() to all peers in its pointer group(s) that have a different affinity group(s) (_within the same dimension_) [a], marking each peer as the **Next Head**.
+2.a. If a peer in the pointer group(s) fails to acknowledge receipt of the [**Delegated Passaround Message**](), peer Y will try to send the same message to a different peer that has the same affinity group as the failed one. If none found, that peer is simply skipped in that **Delegation round**.
+2.b. A peer receiving a **Delegated Passaround Message** will simply gain on the role of the **Head** and initiate a **Passing Round** in its own affinity group(s) and **delegate** that round to others in the same fashion.
+2.c. In case Peer Y fails to **delegate** a **Passaround Message** through its pointer group(s), peer Y will try to delegate this message through its own affinity group(s) by hand-picking peers that have different pointer groups and sending a [**Forwarded Delegated Passaround Message**]
+2.d. A peer receiving a **Forwarded Delegated Passaround Message** will not initiate a **Passing Around** in its affinity group(s), but will try to initiate a **Delegation Round** to other affinity groups through its pointers group(s), in case it fails, it will try to initiate a **_Delegation Forwarding Round_** as previously explained.
+3. If a peer receiving a **Passaround Message** or **Delegated Passaround Message** or **Forwarded Delegated Passaround message** has seen this message **MaxSeenTimes**, it will not pass it around nor delegate it.
+4. Peers should configure the maximum amount they want receive the same message (**MaxSeenTimes**) to be larger than the maximum laps a message can do within an affinity group **MaxLaps**
+
 
 The Passaround Algorithm is as follows:
 ```
 Passaround(M):
   P <- Current Peer
+
+  if MessagesPool[M].Seen == MaxSeenTimes:
+    return
   
-  if MessagesPool[M].Seen == 3:
+  if M.Head == P.Address AND MessagesPool[M].Seen == P.MaxLaps + 1:
      return
 
-  A, B, C <- PickRandomNodes(P.HatClub)
-  for E in [A, B, C]: P.Send(M, E)
+ 
+  Passed <- False
+  Current <- P
+  while !Passed:
+    S <- PickSuccessor(Current.AffinityGroup)
+    Passed <- P.Passaround(M, S)
+    Current <- S
   
-  if M.Head == P.Address AND MessagesPool[M].Seen == 0:
-    if M.CoveredHatClubs.Length >= HatClubsCount:
-       return
+  if M.Head == P.Address AND MessagesPool[M].Seen < P.MaxSeenTimes:
 
-    N <- PickRandomNodeWithDifferentHatClub(P.BootClub)
-
-    M.Head <- N.Address
-    M.CoveredHatClubs.Push(P.HatCase)
-
-    P.Send(M, N)
-
+    Ns <- PickWithDifferentAffinityGroups(P.PointersClub)
+    
+    Failures <- []
+    for next in Ns:
+      Failed <- P.DelegatePassaround(M, next)
+      if Failed:
+        Failures.push(next)
+        
+    if Length(Failures) == Length(P.PointerGroups):
+      Fwds <- PickWithDifferentPointerGroups(P.AffinityGroup)
+      for fwd in Fwds:
+         P.ForwardDelegatedPassaround(M, fwd)
+    else:
+      for failure in Failures:
+        Alt <- PickWithSameAffinity(AffinityGroup=failure.AffinityGroup, P.PointersGroup)
+        if Alt:
+          P.DelegatePassaround(M, Alt)
+  
   MessagesMap[M].Seen++
-  
 ```
+
+This algorithm should is given as an example for a gemini dimension equals `gd=1`.
+
+To extend it to `gd=n`, simply Pass, Delegate and Forward Delegation in each dimension's Affinity group, and increase **MaxSeenTimes** and **MaxLaps** to account for the number of dimensions. (_Multiplying those parameteres by the dimensions number `gd` is recommended_)
 
 #### 3. (WIP) Targeted Passaround Communication / Targeted Crawling Multicast
 
