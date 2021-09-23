@@ -163,12 +163,18 @@ We will call this type of round **Targeted Passing Round**.
 A peer Y initiates such a round as follows:
 
 1. Peer Y send a **Targeted Passaround Message** to the nodes within its affinity group(s) falling under the **TargetCriteria** in the message.
+
 2. Peer Y **_delegates_** and **_forwards delegations_** of the **Targeted Passaround Messages** in the same way a **Passaround Message** is delegated/forward-delegated.
+
 2. **TargetCriteria** specifies **Operation** and **TargetSet**.
+
 3. **TargetCriteria** can describe either:
-2.a. A singular exact peer by address, by specifying **Equality** as the **Operation** and the **TargetSet** as that exact peer's address.
-2.b. A multitude of addresses described by a range of addresses, by specifying **InRange** as the **Operation** and the **TargetSet** as the range's lower bound address and the upper bound's address.
-2.c. A multitude of addresses described by a step, by specifying **Step** as the **Operation** and the **TargetSet** as the numerical step length relatively to the sending peer. (_i.e: peer + N, or a logarithmic step as in Chord_) 
+
+3.a. A singular exact peer by address, by specifying **Equality** as the **Operation** and the **TargetSet** as that exact peer's address.
+
+3.b. A multitude of addresses described by a range of addresses, by specifying **InRange** as the **Operation** and the **TargetSet** as the range's lower bound address and the upper bound's address.
+
+3.c. A multitude of addresses described by a step, by specifying **Step** as the **Operation** and the **TargetSet** as the numerical step length relatively to the sending peer. (_i.e: peer + N, or a logarithmic step as in Chord_) 
 
 ### Awareness models (_Specialized states_)
 ---
