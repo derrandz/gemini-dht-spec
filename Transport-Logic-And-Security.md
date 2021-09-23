@@ -35,6 +35,7 @@ Transport logic and security are key elements on the inner working of the p2p ne
 ### 3. Protocol
 
 TCP/IP with a handshake for direct communications
+
 UDP for gossip-like / group or network-wide communication
 
 ### 4. Multiplexing
