@@ -14,7 +14,8 @@ General Network
 4. Help peers locate other peers in different groups
     * If by using the default routing/discovery algorithm a peer is not able to locate or send a message to a peer on other group seed nodes should be able to provide the requested peer's last known information.
 
-Chain Aware Network    
+Chain Aware Network  
+    
 5. Respond to Chain-awareness Sync Request from peers
     * Although all the nodes are part of chain-aware network The bootstrap node network chart is expected to be updated at regular intervals and can help with cross-group syncing scenarios.
 
