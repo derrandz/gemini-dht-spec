@@ -1,3 +1,5 @@
+// WIP
+
 # The Bootstrap Node
 
 A special bootstrap node should exist in the network to help with tasks that require more precise knowledge of the networks as a whole.
