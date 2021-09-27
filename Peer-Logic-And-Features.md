@@ -65,17 +65,21 @@ The direct communication model is specified as follows:
 
 A Passaround Communication model is a progressive multicast happening and propagating from peer to peer until the entire network is covered.
 
-This model is similar to the direct communication model since the peer who initiates the "passing" (_which shall be referred to from now on as the **head** peer_) requires to receive a final acknowledgement of the delivery of the message to all the other peers in its immediate affinity group (_routing state_), but is different in the fact that it only communicates with one next node.
+This model is similar to the direct communication model in as far as receiving acknowledgements of delivery is required, however is different in the fact that multi-unicasts don't stop at one star pattern but span over every other similar tree/star in the network, gaining the multicast property.
 
 A visual illustration of this sequential process is present here and is as follow:
 
-![Passaround as is](https://i.ibb.co/5L12rFP/passaround-1.png)
+**Passaround initiated by a head node**
+![Passaround as is from head node](https://i.ibb.co/2MHxsT6/Screen-Shot-2021-09-27-at-11-31-35.png)
+
+**Passaround initiated by a child node**
+![Passaround as in from child node](https://i.ibb.co/n1vb6kd/Screen-Shot-2021-09-27-at-11-30-17.png)
 
 If we are to aggregate all peers and their rings in one network ring, it would be very similar to chord and as follows:
 
 ![Passaround Communication as in Chord](https://www.researchgate.net/profile/Mario-Kolberg/publication/262398264/figure/fig1/AS:669953283862535@1536740718640/An-example-Chord-network-showing-the-choice-of-finger-nodes-for-Node-N8_Q320.jpg)
 
-Except that the jump will not be logarithmic but sequential (_in a given affinity group_) and also semi-random (_in hour other affinity groups are accessed from a given affinity group_).
+Except that the jump will not be logarithmic but constant.
 
 (_Refer to [Routing Structure And Algorithm](https://github.com/pokt-network/gemelos/wiki/Routing-Structure-And-Algorithm) section to learn more about the ring structure and how can this communication model be achieved_)
 
@@ -87,77 +91,46 @@ A peer in the [Gemini](#) is organized and ordered in within a number of affinit
 
 A peer Y is concerned with passing around a message to its affinity group and delegating this task to other affinity groups so that the entire network receives this message.
 
-To achieve this, peer Y initiates a **Passing Round**, in which case it becomes a **Head**. 
+To achieve this, we split every affinity group into k intervals (_with k=√n, and n peers in the group as best parameter_), and designate the first peer in each of those intervals as the interval's head.
 
-A peer Y initiates a passing round as follows:
+From then on, a message is multicasted within an affinity group by first disseminating this message amongst interval heads in its group, each head goes on to send this message to each child it is responsible for. To ensure that this message is properly disseminated to the entire network, the interval heads make sure to also delegate this message to other affinity groups through their pointers groups.
 
-1. Peer Y sends a [**Passaround Message**]() to its immediate successor in its affinity group(s)
+For a given peer Y to initiate a **Passing Round**, it performs the following:
 
-     1.1. Peer Y must receive an acknowledgment of receipt from its successor.
+1. Peer Y sends a [**Passaround Message**]() to its immediate head node in its affinity group(s)
 
-     1.b. In case the successor fails to acknowledge receipt within a **retry** window, peer Y marks this peer as a **skipped** peer in the message's header and passes it to successor of the failed peer.
+     1.1. Peer Y must receive an acknowledgment of receipt from its head node.
 
-     1.c. When a peer receives a [**Passaround Message**](), it acknowledges the receipt of the message and passes the message to its successor in the same fashion.
+     1.b. In case the immediate **head** of peer Y fails to acknowledge receipt within a **retry** window, peer Y marks this peer as a **skipped** peer in the message's header and passes it to successor of the failed peer as the new **head**.
 
-     1.d. A **Passing Round** will go on **MaxLaps** times before the **Head** peer receives it **MaxLaps+1** times and stops passing it around and closes this round.
+     1.c. When a **head** peer receives a [**Passaround Message**](), it acknowledges the receipt of the message and passes the message to the other heads in the interval successor in the same fashion.
 
-     1.e In case the peer that fails to acknowledge the receipt happens to be the same peer as the **Head** that initiated this **Passing Round**, the peer in action will try to send the same **Passaround Message** to the successor of the failing head, but mark this successor as the _new_ **Head** to ensure that the **Passing Round**.
+    1.d If a **head** peer fails to acknowledge the receipt of a message, its successor is taken as a new **head**.
+
+     1.e If peer Y is a **head**, then peer Y is its own immediate head.
 
 2. Peer Y sends a [**Delegated Passaround Message**]() to all peers in its pointer group(s) that have a different affinity group(s) (_within the same dimension_) [a], marking each peer as the **Next Head**.
 
    2.a. If a peer in the pointer group(s) fails to acknowledge receipt of the [**Delegated Passaround Message**](), peer Y will try to send the same message to a different peer that has the same affinity group as the failed one. If none found, that peer is simply skipped in that **Delegation round**.
 
-   2.b. A peer receiving a **Delegated Passaround Message** will simply gain on the role of the **Head** and initiate a **Passing Round** in its own affinity group(s) and **delegate** that round to others in the same fashion.
+   2.b. A peer receiving a **Delegated Passaround Message** will simply initiate a **Passing Round** in its own affinity group(s) as described in step 1. Depending on whether it is an interval **head** within its own affinity group, it might **delegate** that round to others in the same fashion.
 
-   2.c. In case Peer Y fails to **delegate** a **Passaround Message** through its pointer group(s), peer Y will try to delegate this message through its own affinity group(s) by hand-picking peers that have different pointer groups and sending a [**Forwarded Delegated Passaround Message**]
+   2.c. In case a **head** peer Y fails to **delegate** a **Passaround Message** through its pointer group(s), the **head** peer will try to delegate this message through its own affinity group(s) by hand-picking peers that have different pointer groups and sending a [**Forwarded Delegated Passaround Message**]
 
-   2.d. A peer receiving a **Forwarded Delegated Passaround Message** will not initiate a **Passing Around** in its affinity group(s), but will try to initiate a **Delegation Round** to other affinity groups through its pointers group(s), in case it fails, it will try to initiate a **_Delegation Forwarding Round_** as previously explained.
+   2.d. A peer receiving a **Forwarded Delegated Passaround Message** will not initiate a **Passing Around** in its affinity group(s), but will try to initiate a **Delegation Round** to other affinity groups through its pointers group(s), in case it fails, it will try to initiate a **_Delegation Forwarding Round_** in the same way described in step (2.c)
 
 3. If a peer receiving a **Passaround Message** or **Delegated Passaround Message** or **Forwarded Delegated Passaround message** has seen this message **MaxSeenTimes**, it will not pass it around nor delegate it.
 
-4. Peers should configure the maximum amount they want receive the same message (**MaxSeenTimes**) to be larger than the maximum laps a message can do within an affinity group **MaxLaps**
-
 
 The Passaround Algorithm is as follows:
+
+![Passaround Algorithm in Latex](https://i.ibb.co/m0xPzL0/Screen-Shot-2021-09-27-at-13-22-52.png)
+![Passaround Algorithm in Latex](https://i.ibb.co/qncNPVm/Screen-Shot-2021-09-27-at-13-21-54.png)
+![Passaround Algorithm in Latex](https://i.ibb.co/HCV2KK4/Screen-Shot-2021-09-27-at-13-22-03.png)
+![Passaround Algorithm in Latex](https://i.ibb.co/PDVsz5S/Screen-Shot-2021-09-27-at-13-22-09.png)
+As copiable MD version is as follows
 ```
-Passaround(M):
-  P <- Current Peer
 
-  if MessagesPool[M].Seen == MaxSeenTimes:
-    return
-  
-  if M.Head == P.Address AND MessagesPool[M].Seen == P.MaxLaps + 1:
-     return
-
- 
-  Passed <- False
-  Current <- P
-  while !Passed:
-    S <- PickSuccessor(Current.AffinityGroup)
-    Passed <- P.Passaround(M, S)
-    Current <- S
-  
-  if M.Head == P.Address AND MessagesPool[M].Seen < P.MaxSeenTimes:
-
-    Ns <- PickWithDifferentAffinityGroups(P.PointersClub)
-    
-    Failures <- []
-    for next in Ns:
-      Failed <- P.DelegatePassaround(M, next)
-      if Failed:
-        Failures.push(next)
-        
-    if Length(Failures) == Length(P.PointerGroups):
-      Fwds <- PickWithDifferentPointerGroups(P.AffinityGroup)
-      for fwd in Fwds:
-         P.ForwardDelegatedPassaround(M, fwd)
-    else:
-      for failure in Failures:
-        Alt <- PickWithSameAffinity(AffinityGroup=failure.AffinityGroup, P.PointersGroup)
-        if Alt:
-          P.DelegatePassaround(M, Alt)
-  
-  MessagesMap[M].Seen++
 ```
 
 This algorithm should is given as an example for a gemini dimension equals `gd=1`.
