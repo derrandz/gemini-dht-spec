@@ -137,29 +137,6 @@ This algorithm should is given as an example for a gemini dimension equals `gd=1
 
 To extend it to `gd=n`, simply Pass, Delegate and Forward Delegation in each dimension's Affinity group, and increase **MaxSeenTimes** and **MaxLaps** to account for the number of dimensions. (_Multiplying those parameteres by the dimensions number `gd` is recommended_)
 
-#### 3. Targeted Passaround Communication / Targeted Crawling Multicast
-
-This model is almost no different than the **Passaround** model, except that the **Passing Round**'s length is significantly smaller.
-
-Since we are interested in passing to specific targets, the **Passing Round** will be restricted to the peers described by the targeting rules.
-
-We will call this type of round **Targeted Passing Round**.
-
-A peer Y initiates such a round as follows:
-
-1. Peer Y send a **Targeted Passaround Message** to the nodes within its affinity group(s) falling under the **TargetCriteria** in the message.
-
-2. Peer Y **_delegates_** and **_forwards delegations_** of the **Targeted Passaround Messages** in the same way a **Passaround Message** is delegated/forward-delegated.
-
-2. **TargetCriteria** specifies **Operation** and **TargetSet**.
-
-3. **TargetCriteria** can describe either:
-
-3.a. A singular exact peer by address, by specifying **Equality** as the **Operation** and the **TargetSet** as that exact peer's address.
-
-3.b. A multitude of addresses described by a range of addresses, by specifying **InRange** as the **Operation** and the **TargetSet** as the range's lower bound address and the upper bound's address.
-
-3.c. A multitude of addresses described by a step, by specifying **Step** as the **Operation** and the **TargetSet** as the numerical step length relatively to the sending peer. (_i.e: peer + N, or a logarithmic step as in Chord_) 
 
 ### Awareness models (_Specialized states_)
 ---
