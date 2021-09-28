@@ -109,17 +109,22 @@ For a given peer Y to initiate a **Passing Round**, it performs the following:
 
      1.e If peer Y is a **head**, then peer Y is its own immediate head.
 
-2. Peer Y sends a [**Delegated Passaround Message**]() to all peers in its pointer group(s) that have a different affinity group(s) (_within the same dimension_) [a], marking each peer as the **Next Head**.
+2. Peer Y sends a [**Delegated Passaround Message**]() to all peers in its pointer group(s) that have a different affinity group(s) (_within the same dimension_) [a], marking each peer as the **Next Head**. One peer among those will be marked **Next Delegator**.
 
    2.a. If a peer in the pointer group(s) fails to acknowledge receipt of the [**Delegated Passaround Message**](), peer Y will try to send the same message to a different peer that has the same affinity group as the failed one. If none found, that peer is simply skipped in that **Delegation round**.
 
-   2.b. A peer receiving a **Delegated Passaround Message** will simply initiate a **Passing Round** in its own affinity group(s) as described in step 1. Depending on whether it is an interval **head** within its own affinity group, it might **delegate** that round to others in the same fashion.
+   2.b. A peer receiving a **Delegated Passaround Message** will simply initiate a **Passing Round** in its own affinity group(s) as described in step 1. Depending on whether it is an interval **head** within its own affinity group, it might **delegate** that round to others in the same fashion if it happens to be the **Next Delegator**
 
    2.c. In case a **head** peer Y fails to **delegate** a **Passaround Message** through its pointer group(s), the **head** peer will try to delegate this message through its own affinity group(s) by hand-picking peers that have different pointer groups and sending a [**Forwarded Delegated Passaround Message**]
 
    2.d. A peer receiving a **Forwarded Delegated Passaround Message** will not initiate a **Passing Around** in its affinity group(s), but will try to initiate a **Delegation Round** to other affinity groups through its pointers group(s), in case it fails, it will try to initiate a **_Delegation Forwarding Round_** in the same way described in step (2.c)
 
 3. If a peer receiving a **Passaround Message** or **Delegated Passaround Message** or **Forwarded Delegated Passaround message** has seen this message **MaxSeenTimes**, it will not pass it around nor delegate it.
+
+4. The **Next Delegator** after having propagated the message in its own affinity group, will delegate to every one in its pointer group that was not delegated to before (_The **Delegation Passaround Message** keeps track of the already-delegated-to groups_)
+  
+  4.a The next delegator will also pick a new next delegator, until no next delegator is able to find new affinity groups to delegate to.
+  4.b The next delegator can ignore the fact that everybody received the message and go for for extra delegation rounds if we **_MaxRedundancy_** is not reached yet.
 
 
 The Passaround Algorithm is as follows:
