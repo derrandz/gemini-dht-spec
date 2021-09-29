@@ -87,13 +87,13 @@ Except that the jump will not be logarithmic but constant.
 
 The Passaround Communication model can be specified as follows:
 
-A peer in the [Gemini](#) is organized and ordered in within a number of affinity groups and a number of pointer groups.
+A peer in a [Gemini](#) overlay is organized and ordered in within a number of affinity groups and a number of pointer groups.
 
 A peer Y is concerned with passing around a message to its affinity group and delegating this task to other affinity groups so that the entire network receives this message.
 
 To achieve this, we split every affinity group into k intervals (_with k=√n, and n peers in the group as best parameter_), and designate the first peer in each of those intervals as the interval's head.
 
-From then on, a message is multicasted within an affinity group by first disseminating this message amongst interval heads in its group, each head goes on to send this message to each child it is responsible for. To ensure that this message is properly disseminated to the entire network, the interval heads make sure to also delegate this message to other affinity groups through their pointers groups.
+From then on, a message is multicasted within an affinity group by first disseminating this message amongst interval heads in its group, each head goes on to send this message to each child it is responsible for. To ensure that this message is properly disseminated to the entire network, one of the interval heads makes sure to also delegate this message to other affinity groups through its pointers groups.
 
 For a given peer Y to initiate a **Passing Round**, it performs the following:
 
@@ -109,11 +109,11 @@ For a given peer Y to initiate a **Passing Round**, it performs the following:
 
      1.e If peer Y is a **head**, then peer Y is its own immediate head.
 
-2. Peer Y sends a [**Delegated Passaround Message**]() to all peers in its pointer group(s) that have a different affinity group(s) (_within the same dimension_) [a], marking each peer as the **Next Head**. One peer among those will be marked **Next Delegator**.
+2. The head node of Peer Y then sends a [**Delegated Passaround Message**]() to all peers in its pointer group(s) that have a different affinity group(s) (_within the same dimension_) [a], marking each peer as the **Next Head**. One peer among those will be marked **Next Delegator**.
 
    2.a. If a peer in the pointer group(s) fails to acknowledge receipt of the [**Delegated Passaround Message**](), peer Y will try to send the same message to a different peer that has the same affinity group as the failed one. If none found, that peer is simply skipped in that **Delegation round**.
 
-   2.b. A peer receiving a **Delegated Passaround Message** will simply initiate a **Passing Round** in its own affinity group(s) as described in step 1. Depending on whether it is an interval **head** within its own affinity group, it might **delegate** that round to others in the same fashion if it happens to be the **Next Delegator**
+   2.b. A peer receiving a **Delegated Passaround Message** will simply initiate a **Passing Round** in its own affinity group(s) as described in step 1. Depending on whether it is an interval **head** within its own affinity group and whether it happens to be the designated **Next Delegator** in the delegated message, it might **delegate** that round to others in the same fashion, except that this time around, it will **delegate** only to affinity groups that weren't delegated to before. (_The delegation message keeps track of this_)
 
    2.c. In case a **head** peer Y fails to **delegate** a **Passaround Message** through its pointer group(s), the **head** peer will try to delegate this message through its own affinity group(s) by hand-picking peers that have different pointer groups and sending a [**Forwarded Delegated Passaround Message**]
 
@@ -124,14 +124,14 @@ For a given peer Y to initiate a **Passing Round**, it performs the following:
 4. The **Next Delegator** after having propagated the message in its own affinity group, will delegate to every one in its pointer group that was not delegated to before (_The **Delegation Passaround Message** keeps track of the already-delegated-to groups_)
   
   4.a The next delegator will also pick a new next delegator, until no next delegator is able to find new affinity groups to delegate to.
-  4.b The next delegator can ignore the fact that everybody received the message and go for for extra delegation rounds if we **_MaxRedundancy_** is not reached yet.
+  4.b The next delegator can ignore the fact that everybody has already received (_if it runs out of new affinity groups to route to_) the message and go for for extra delegation rounds if **_MaxRedundancy_** is not reached yet.
 
 
 The Passaround Algorithm is as follows:
 
-![Passaround Algorithm in Latex](https://i.ibb.co/m0xPzL0/Screen-Shot-2021-09-27-at-13-22-52.png)
+![Passaround Algorithm in Latex](https://i.ibb.co/BjQ3MDc/Screen-Shot-2021-09-29-at-03-05-53.png)
 ![Passaround Algorithm in Latex](https://i.ibb.co/qncNPVm/Screen-Shot-2021-09-27-at-13-21-54.png)
-![Passaround Algorithm in Latex](https://i.ibb.co/HCV2KK4/Screen-Shot-2021-09-27-at-13-22-03.png)
+![Passaround Algorithm in Latex](https://i.ibb.co/tJBY7Zx/Screen-Shot-2021-09-29-at-03-06-08.png)
 ![Passaround Algorithm in Latex](https://i.ibb.co/PDVsz5S/Screen-Shot-2021-09-27-at-13-22-09.png)
 As copiable MD version is as follows
 ```
@@ -140,8 +140,13 @@ As copiable MD version is as follows
 
 This algorithm should is given as an example for a gemini dimension equals `gd=1`.
 
-To extend it to `gd=n`, simply Pass, Delegate and Forward Delegation in each dimension's Affinity group, and increase **MaxSeenTimes** and **MaxLaps** to account for the number of dimensions. (_Multiplying those parameteres by the dimensions number `gd` is recommended_)
+To extend it to `gd=n`, simply Pass, Delegate and Forward Delegation in each dimension's Affinity group, and increase **MaxSeenTimes** to account for the number of dimensions.
 
+**Redundancy estimation and cost**:
+
+In the current way this is setup, a given affinity group will not receive a message more than once due to the mere fact that we explicitly track impacted affinity group to not send them messages again.
+
+To achieve some level of redundancy, we will simply go for a new round of multicast for a given message, once the first round finishes, and to achieve this, we will simply reset the impact affinity groups tracker as if we have not reached any affinity group yet and basically restart the entire round from scratch.
 
 ### Awareness models (_Specialized states_)
 ---
