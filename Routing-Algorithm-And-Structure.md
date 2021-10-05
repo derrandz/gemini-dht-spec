@@ -432,10 +432,14 @@ For the seed node to determine the level, we will simply set the following condi
 A. If the network is still in an **Expansion phase**
    1. Gemini dimension will be 4 instead of default 2.
    2. h and b will `h=b=3`
+
 B. If the network is at a **Rapid Growth phase**
    1. Gemini dimension will be back to default, 2.
    2. h and b will then use the correct estimated values per our data sheets, `h=b=5`, we might opt for `h=5 b=3` for more accuracy.
+
+
 C. If the network is at a **Stabilization phase**
+
   1. Gemini dimension will be the default, 2.
   2. h and b will use the paper parameters, `h=b=10`
 
