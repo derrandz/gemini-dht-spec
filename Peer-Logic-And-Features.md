@@ -70,10 +70,10 @@ This model is similar to the direct communication model in as far as receiving a
 A visual illustration of this sequential process is present here and is as follow:
 
 **Passaround initiated by a head node**
-![Passaround as is from head node](https://i.ibb.co/2MHxsT6/Screen-Shot-2021-09-27-at-11-31-35.png)
+![Passaround as is from head node](https://i.ibb.co/1MxMyCm/Screen-Shot-2021-10-05-at-18-09-37.png)
 
 **Passaround initiated by a child node**
-![Passaround as in from child node](https://i.ibb.co/n1vb6kd/Screen-Shot-2021-09-27-at-11-30-17.png)
+![Passaround as in from child node](https://i.ibb.co/9bsbXwN/Screen-Shot-2021-10-05-at-18-11-45.png)
 
 If we are to aggregate all peers and their rings in one network ring, it would be very similar to chord and as follows:
 
@@ -129,10 +129,10 @@ For a given peer Y to initiate a **Passing Round**, it performs the following:
 
 The Passaround Algorithm is as follows:
 
-![Passaround Algorithm in Latex](https://i.ibb.co/BjQ3MDc/Screen-Shot-2021-09-29-at-03-05-53.png)
-![Passaround Algorithm in Latex](https://i.ibb.co/qncNPVm/Screen-Shot-2021-09-27-at-13-21-54.png)
-![Passaround Algorithm in Latex](https://i.ibb.co/tJBY7Zx/Screen-Shot-2021-09-29-at-03-06-08.png)
-![Passaround Algorithm in Latex](https://i.ibb.co/PDVsz5S/Screen-Shot-2021-09-27-at-13-22-09.png)
+![Passaround Algorithm 1 in Latex](https://i.ibb.co/BjQ3MDc/Screen-Shot-2021-09-29-at-03-05-53.png)
+![Passaround Algorithm 2 in Latex](https://i.ibb.co/qncNPVm/Screen-Shot-2021-09-27-at-13-21-54.png)
+![Passaround Algorithm 3 in Latex](https://i.ibb.co/tJBY7Zx/Screen-Shot-2021-09-29-at-03-06-08.png)
+![Passaround Algorithm 4 in Latex](https://i.ibb.co/PDVsz5S/Screen-Shot-2021-09-27-at-13-22-09.png)
 As copiable MD version is as follows
 ```
 
