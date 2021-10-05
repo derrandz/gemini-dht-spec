@@ -127,10 +127,10 @@ For a given peer Y to initiate a **Passing Round**, it performs the following:
 
 The Passaround Algorithm is as follows:
 
-![Passaround Algorithm 1 in Latex](https://i.ibb.co/BjQ3MDc/Screen-Shot-2021-09-29-at-03-05-53.png)
-![Passaround Algorithm 2 in Latex](https://i.ibb.co/qncNPVm/Screen-Shot-2021-09-27-at-13-21-54.png)
-![Passaround Algorithm 3 in Latex](https://i.ibb.co/tJBY7Zx/Screen-Shot-2021-09-29-at-03-06-08.png)
-![Passaround Algorithm 4 in Latex](https://i.ibb.co/PDVsz5S/Screen-Shot-2021-09-27-at-13-22-09.png)
+![Passaround Algorithm 1 in Latex](https://i.ibb.co/BjQ3MDc/Screen-Shot-2021-09-29-at-03-05x-53.png)
+![Passaround Algorithm 2 in Latex](https://i.ibb.co/qncNPVm/Screen-Shot-2021-09-27-at-13-21x-54.png)
+![Passaround Algorithm 3 in Latex](https://i.ibb.co/tJBY7Zx/Screen-Shot-2021-09-29-at-03-06x-08.png)
+![Passaround Algorithm 4 in Latex](https://i.ibb.co/PDVsz5S/Screen-Shot-2021-09-27-at-13-22x-09.png)
 As copiable MD version is as follows
 ```
 
