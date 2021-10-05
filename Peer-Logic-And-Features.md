@@ -131,7 +131,7 @@ The Passaround Algorithm is as follows:
 
 ![Passaround Algorithm 2 in Latex](https://i.ibb.co/12Q9ZLZ/Screen-Shot-2021-10-06-at-00-38-20.png)
 
-![Passaround Algorithm 3 in Latex](https://i.ibb.co/aatJBY7Zx/Screen-Shot-2021-09-29-at-03-06x-08.png)
+![Passaround Algorithm 3 in Latex](https://i.ibb.co/84sGF82/Screen-Shot-2021-10-06-at-00-38-26.png)
 
 ![Passaround Algorithm 4 in Latex](https://i.ibb.co/aaPDVsz5S/Screen-Shot-2021-09-27-at-13-22x-09.png)
 
