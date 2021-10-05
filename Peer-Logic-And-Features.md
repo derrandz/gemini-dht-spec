@@ -133,7 +133,7 @@ The Passaround Algorithm is as follows:
 
 ![Passaround Algorithm 3 in Latex](https://i.ibb.co/84sGF82/Screen-Shot-2021-10-06-at-00-38-26.png)
 
-![Passaround Algorithm 4 in Latex](https://i.ibb.co/aaPDVsz5S/Screen-Shot-2021-09-27-at-13-22x-09.png)
+![Passaround Algorithm 4 in Latex](https://i.ibb.co/8N1XvbL/Screen-Shot-2021-10-06-at-00-40-58.png)
 
 As copiable MD version is as follows
 ```
