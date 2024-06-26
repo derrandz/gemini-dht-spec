@@ -1,8 +1,6 @@
 Welcome to wiki of the the peer-to-peer layer of Pocket Network 1.0!
 
-We are calling it: Hydrate, as in hydra because we are leveraging a multitude of solutions, and hydrate as in make your p2p layer come to life.
-
-In this Wiki all information relative to the Hydrate specification and implementation, respecting the following order:
+In this Wiki all information relative to the Gemini specification and implementation, respecting the following order:
 
 1. [Routing Structure and Algorithms](./Routing-Algorithm-And-Structure.md)
 
